@@ -4395,16 +4395,17 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
   }
 
   function bootMotion() {
+    var mainProduct = document.querySelector('#MainProduct-template--18647385702498__main');
     var revealTargets = Array.prototype.slice.call(document.querySelectorAll([
-      '#MainProduct-template--18647385702498__main .product__media-wrapper',
-      '#MainProduct-template--18647385702498__main .product__info-wrapper',
       '.shopify-section:not(.section-header):not(.announcement-bar-section)',
       '.multicolumn-card',
       '.image-with-text__media',
       '.image-with-text__text-item',
       '.rich-text__blocks',
       '.product__description li'
-    ].join(',')));
+    ].join(','))).filter(function (el) {
+      return !mainProduct || !mainProduct.contains(el);
+    });
 
     revealTargets.forEach(function (el, i) {
       if (el.classList.contains('habtrack-reveal')) return;
@@ -4415,7 +4416,8 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
       el.style.setProperty('--habtrack-delay', Math.min((i % 6) * 70, 280) + 'ms');
     });
 
-    document.querySelectorAll('h1, h2, .product__title, .rich-text__heading').forEach(function (el) {
+    document.querySelectorAll('h1, h2, .rich-text__heading').forEach(function (el) {
+      if (mainProduct && mainProduct.contains(el)) return;
       splitLetters(el);
       el.classList.add('habtrack-reveal');
     });
