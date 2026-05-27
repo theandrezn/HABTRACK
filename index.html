@@ -945,61 +945,6 @@ Shopify.SignInWithShop.User.recognized = false;</script>
   }
 </script>
 
-    <script id="no-tracking-guard">
-      (function () {
-        var trackingParams = /^(gclid$|gbraid$|wbraid$|fbclid$|msclkid$|ttclid$|twclid$|li_fat_id$|mc_cid$|mc_eid$)/i;
-        var blockedHosts = /(facebook\.com|connect\.facebook\.net|google-analytics\.com|googletagmanager\.com|googleadservices\.com|doubleclick\.net|analytics\.google\.com|monorail-edge\.shopifysvc\.com|error-analytics-production\.shopifysvc\.com|klaviyo\.com|static\.klaviyo\.com)/i;
-        function cleanUrl(value) {
-          try {
-            var url = new URL(value, window.location.href);
-            var changed = false;
-            Array.from(url.searchParams.keys()).forEach(function (key) {
-              if (trackingParams.test(key)) {
-                url.searchParams.delete(key);
-                changed = true;
-              }
-            });
-            return changed ? url.toString() : value;
-          } catch (e) {
-            return value;
-          }
-        }
-        function isBlocked(value) {
-          try { return blockedHosts.test(new URL(value, window.location.href).hostname); }
-          catch (e) { return blockedHosts.test(String(value)); }
-        }
-        if (window.location.search && Array.from(new URLSearchParams(window.location.search).keys()).some(function (key) { return trackingParams.test(key); })) {
-          window.history.replaceState({}, document.title, cleanUrl(window.location.href));
-        }
-        document.addEventListener('DOMContentLoaded', function () {
-          document.querySelectorAll('a[href]').forEach(function (link) {
-            link.setAttribute('href', cleanUrl(link.getAttribute('href')));
-          });
-        });
-        if (navigator.sendBeacon) {
-          var originalBeacon = navigator.sendBeacon.bind(navigator);
-          navigator.sendBeacon = function (url, data) { return isBlocked(url) ? true : originalBeacon(url, data); };
-        }
-        if (window.fetch) {
-          var originalFetch = window.fetch.bind(window);
-          window.fetch = function (input, init) {
-            var url = typeof input === 'string' ? input : input && input.url;
-            return isBlocked(url) ? Promise.resolve(new Response(null, { status: 204 })) : originalFetch(input, init);
-          };
-        }
-        var originalOpen = XMLHttpRequest.prototype.open;
-        XMLHttpRequest.prototype.open = function (method, url) {
-          this.__trackingBlocked = isBlocked(url);
-          return originalOpen.apply(this, arguments);
-        };
-        var originalSend = XMLHttpRequest.prototype.send;
-        XMLHttpRequest.prototype.send = function () {
-          if (this.__trackingBlocked) return;
-          return originalSend.apply(this, arguments);
-        };
-      }());
-    </script>
-
     <script id="utmify-pixel">
       window.pixelId = "6a172153f57a01e3a3e47ada";
       var a = document.createElement("script");
