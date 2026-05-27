@@ -947,7 +947,7 @@ Shopify.SignInWithShop.User.recognized = false;</script>
 
     <script id="no-tracking-guard">
       (function () {
-        var trackingParams = /^(utm_|gclid$|gbraid$|wbraid$|fbclid$|msclkid$|ttclid$|twclid$|li_fat_id$|mc_cid$|mc_eid$)/i;
+        var trackingParams = /^(gclid$|gbraid$|wbraid$|fbclid$|msclkid$|ttclid$|twclid$|li_fat_id$|mc_cid$|mc_eid$)/i;
         var blockedHosts = /(facebook\.com|connect\.facebook\.net|google-analytics\.com|googletagmanager\.com|googleadservices\.com|doubleclick\.net|analytics\.google\.com|monorail-edge\.shopifysvc\.com|error-analytics-production\.shopifysvc\.com|klaviyo\.com|static\.klaviyo\.com)/i;
         function cleanUrl(value) {
           try {
@@ -999,6 +999,23 @@ Shopify.SignInWithShop.User.recognized = false;</script>
         };
       }());
     </script>
+
+    <script id="utmify-pixel">
+      window.pixelId = "6a172153f57a01e3a3e47ada";
+      var a = document.createElement("script");
+      a.setAttribute("async", "");
+      a.setAttribute("defer", "");
+      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+      document.head.appendChild(a);
+    </script>
+    <script
+      id="utmify-utms"
+      src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+      data-utmify-prevent-xcod-sck
+      data-utmify-prevent-subids
+      async
+      defer
+    ></script>
 
 <style id="habtrack-performance-motion">
   html { scroll-behavior: smooth; }
