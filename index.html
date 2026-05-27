@@ -28,8 +28,8 @@
 <meta property="og:url" content="https://sharpkit.co/products/sharp-kit-habit-system-updated-april-2026">
 <meta property="og:title" content="HabTrack Habit System (Updated May 2026)">
 <meta property="og:type" content="product">
-<meta property="og:description" content="The Daily Habit System That 15,000+ People Use to Stay Consistent Build consistency. Build momentum. Build the life you said you wanted. 🔁 See your streak grow every day so quitting feels harder than continuing.Visual cues + streaks = stronger follow-through. 📊 Turn your goals into a visible scoreboardProgress bars and"><meta property="og:image" content="images/habtrack-first-gallery.png">
-  <meta property="og:image:secure_url" content="images/habtrack-first-gallery.png">
+<meta property="og:description" content="The Daily Habit System That 15,000+ People Use to Stay Consistent Build consistency. Build momentum. Build the life you said you wanted. 🔁 See your streak grow every day so quitting feels harder than continuing.Visual cues + streaks = stronger follow-through. 📊 Turn your goals into a visible scoreboardProgress bars and"><meta property="og:image" content="images/habtrack-first-gallery-optimized.webp">
+  <meta property="og:image:secure_url" content="images/habtrack-first-gallery-optimized.webp">
   <meta property="og:image:width" content="2048">
   <meta property="og:image:height" content="1152"><meta property="og:price:amount" content="9.90">
   <meta property="og:price:currency" content="USD"><meta name="twitter:card" content="summary_large_image">
@@ -603,7 +603,7 @@ Shopify.SignInWithShop.User.recognized = false;</script>
       "url": "\/products\/sharp-kit-habit-system-updated-april-2026",
       "availableForSale": true,
       "title": "HabTrack Habit System (Updated May 2026)",
-      "image": "images/habtrack-first-gallery.png",
+      "image": "images/habtrack-first-gallery-optimized.webp",
       "collectionIds": [296627568738,297291251810],
       "options": [
         
@@ -691,7 +691,7 @@ Shopify.SignInWithShop.User.recognized = false;</script>
             "compareAtPrice": 3300,
             "options": ["Habit + Task Tracker"],
             "imageId": 34809438797922,
-            "image": "images/habtrack-first-gallery.png",
+            "image": "images/habtrack-first-gallery-optimized.webp",
             "inventoryManagement": "shopify",
             "inventoryPolicy": "continue",
             "inventoryQuantity": 99338,
@@ -753,7 +753,7 @@ Shopify.SignInWithShop.User.recognized = false;</script>
       "url": "\/products\/sharp-kit-habit-system-updated-april-2026",
       "availableForSale": true,
       "title": "HabTrack Habit System (Updated May 2026)",
-      "image": "images/habtrack-first-gallery.png",
+      "image": "images/habtrack-first-gallery-optimized.webp",
       "collectionIds": [296627568738,297291251810],
       "options": [
         
@@ -841,7 +841,7 @@ Shopify.SignInWithShop.User.recognized = false;</script>
             "compareAtPrice": 3300,
             "options": ["Habit + Task Tracker"],
             "imageId": 34809438797922,
-            "image": "images/habtrack-first-gallery.png",
+            "image": "images/habtrack-first-gallery-optimized.webp",
             "inventoryManagement": "shopify",
             "inventoryPolicy": "continue",
             "inventoryQuantity": 99338,
@@ -999,6 +999,54 @@ Shopify.SignInWithShop.User.recognized = false;</script>
         };
       }());
     </script>
+
+<style id="habtrack-performance-motion">
+  html { scroll-behavior: smooth; }
+  img { content-visibility: auto; }
+  .habtrack-reveal {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0) scale(.985);
+    filter: blur(8px);
+    transition: opacity .78s cubic-bezier(.2,.65,.2,1), transform .78s cubic-bezier(.2,.65,.2,1), filter .78s cubic-bezier(.2,.65,.2,1);
+    transition-delay: var(--habtrack-delay, 0ms);
+    will-change: opacity, transform, filter;
+  }
+  .habtrack-reveal--left { transform: translate3d(-32px, 18px, 0) scale(.985); }
+  .habtrack-reveal--right { transform: translate3d(32px, 18px, 0) scale(.985); }
+  .habtrack-reveal--zoom { transform: translate3d(0, 20px, 0) scale(.94); }
+  .habtrack-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+  .habtrack-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .habtrack-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translate3d(0, .72em, 0) rotateX(36deg);
+    transform-origin: 50% 100%;
+    transition: opacity .52s ease, transform .72s cubic-bezier(.16,1,.3,1);
+    transition-delay: calc(var(--letter-index, 0) * 18ms + var(--habtrack-delay, 0ms));
+    will-change: opacity, transform;
+  }
+  .is-visible > .habtrack-letter,
+  .is-visible .habtrack-letter {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateX(0deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .habtrack-reveal, .habtrack-letter {
+      opacity: 1 !important;
+      transform: none !important;
+      filter: none !important;
+      transition: none !important;
+    }
+  }
+</style>
 </head>
 
   <body class="gradient link-btns--arrow action-btns--center">
@@ -1242,7 +1290,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                   </a></li></ul>
         </nav>
       
-<a href="/" class="header__heading-link link link--text focus-inset media media--transparent ratio" style="--ratio-percent: 19.30835734870317%"><img src="images/habtrack-logo-header.png" alt="HabTrack" width="1041" height="201" class="header__heading-logo header__heading-logo--main">
+<a href="/" class="header__heading-link link link--text focus-inset media media--transparent ratio" style="--ratio-percent: 19.30835734870317%"><img src="images/habtrack-logo-header.png" alt="HabTrack" width="1041" height="201" class="header__heading-logo header__heading-logo--main" decoding="async">
 </a><div class="header__icons">
       <details-modal class="header__search">
         <details>
@@ -1448,7 +1496,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/financial-profit.png" alt="Ultimate Money Planner Pack" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/financial-profit.png" alt="Ultimate Money Planner Pack" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -1501,7 +1549,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/adhd.png" alt="ADHD Productivity Pack" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/adhd.png" alt="ADHD Productivity Pack" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -1554,7 +1602,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/Gemini_Generated_Image_mvlz05mvlz05mvlz-Edited.png" alt="52-Week Savings System" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/Gemini_Generated_Image_mvlz05mvlz05mvlz-Edited.png" alt="52-Week Savings System" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -1643,7 +1691,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/think_6fc2c6f0-f133-40ff-a8cd-4e5c14a19386.png" alt="Clear Mind PDF" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/think_6fc2c6f0-f133-40ff-a8cd-4e5c14a19386.png" alt="Clear Mind PDF" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -1696,7 +1744,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/weight-loss.png" alt="Weight-Loss Planner Bundle" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/weight-loss.png" alt="Weight-Loss Planner Bundle" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -1749,7 +1797,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/photo_1.png" alt="100-Pack Motivational Quote Phone Wallpaper" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/photo_1.png" alt="100-Pack Motivational Quote Phone Wallpaper" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -1886,7 +1934,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
               
               
                 <div class="upsell__image">
-                  <img src="images/updated_ffb31b52-f3b9-4ba7-aade-f77e3dfab0f9.png" alt="Lifetime Updates" class="upsell__image__img" loading="lazy" width="auto" height="auto">
+                  <img src="images/updated_ffb31b52-f3b9-4ba7-aade-f77e3dfab0f9.png" alt="Lifetime Updates" class="upsell__image__img" loading="lazy" width="auto" height="auto" decoding="async">
                 </div>
               
             
@@ -2072,7 +2120,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 <div class="product-media-container media-type-image media-fit-contain global-media-settings gradient constrain-height" style="--ratio: 1.7778958554729012; --preview-ratio: 1.7778958554729012;">
   
   <noscript><div class="product__media media">
-        <img src="images/habtrack-first-gallery.png" alt="" srcset="images/habtrack-first-gallery.png 1672w" width="1672" height="941" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/habtrack-first-gallery-optimized.webp" alt="" srcset="images/habtrack-first-gallery-optimized.webp 1672w" width="1672" height="941" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async" fetchpriority="high">
       </div></noscript>
 
   <modal-opener class="product__modal-opener product__modal-opener--image no-js-hidden" data-modal="#ProductModal-template--18647385702498__main">
@@ -2084,7 +2132,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 </span>
     <div class="product__media media media--transparent">
       
-        <img src="images/habtrack-first-gallery.png" alt="" srcset="images/habtrack-first-gallery.png 1672w" width="1672" height="941" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/habtrack-first-gallery-optimized.webp" alt="" srcset="images/habtrack-first-gallery-optimized.webp 1672w" width="1672" height="941" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="25815934468194">
@@ -2100,7 +2148,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 <div class="product-media-container media-type-image media-fit-contain global-media-settings gradient constrain-height" style="--ratio: 1.588235294117647; --preview-ratio: 1.588235294117647;">
   
   <noscript><div class="product__media media">
-        <img src="images/HabitTracker1210.png" alt="" srcset="images/HabitTracker1210_14.png 246w, images/HabitTracker1210_15.png 493w, images/HabitTracker1210_4.png 600w, images/HabitTracker1210_18.png 713w, images/HabitTracker1210_5.png 823w, images/HabitTracker1210_3.png 990w, images/HabitTracker1210_6.png 1100w, images/HabitTracker1210_17.png 1206w, images/HabitTracker1210_20.png 1346w, images/HabitTracker1210_19.png 1426w, images/HabitTracker1210_21.png 1646w, images/HabitTracker1210.png 1946w" width="1946" height="1225" loading="lazy" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/HabitTracker1210-optimized.webp" alt="" srcset="images/HabitTracker1210-optimized.webp 1200w" width="1946" height="1225" loading="lazy" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       </div></noscript>
 
   <modal-opener class="product__modal-opener product__modal-opener--image no-js-hidden" data-modal="#ProductModal-template--18647385702498__main">
@@ -2112,7 +2160,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 </span>
     <div class="product__media media media--transparent">
       
-        <img src="images/HabitTracker1210.png" alt="" srcset="images/HabitTracker1210_14.png 246w, images/HabitTracker1210_15.png 493w, images/HabitTracker1210_4.png 600w, images/HabitTracker1210_18.png 713w, images/HabitTracker1210_5.png 823w, images/HabitTracker1210_3.png 990w, images/HabitTracker1210_6.png 1100w, images/HabitTracker1210_17.png 1206w, images/HabitTracker1210_20.png 1346w, images/HabitTracker1210_19.png 1426w, images/HabitTracker1210_21.png 1646w, images/HabitTracker1210.png 1946w" width="1946" height="1225" loading="lazy" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/HabitTracker1210-optimized.webp" alt="" srcset="images/HabitTracker1210-optimized.webp 1200w" width="1946" height="1225" loading="lazy" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="25657493553250">
@@ -2128,7 +2176,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 <div class="product-media-container media-type-image media-fit-contain global-media-settings gradient constrain-height" style="--ratio: 1.3333333333333333; --preview-ratio: 1.3333333333333333;">
   
   <noscript><div class="product__media media">
-        <img src="images/habtrack-third-gallery.png" alt="" srcset="images/habtrack-third-gallery.png 1448w" width="1448" height="1086" loading="lazy" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/habtrack-third-gallery-optimized.webp" alt="" srcset="images/habtrack-third-gallery-optimized.webp 1448w" width="1448" height="1086" loading="lazy" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       </div></noscript>
 
   <modal-opener class="product__modal-opener product__modal-opener--image no-js-hidden" data-modal="#ProductModal-template--18647385702498__main">
@@ -2140,7 +2188,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 </span>
     <div class="product__media media media--transparent">
       
-        <img src="images/habtrack-third-gallery.png" alt="" srcset="images/habtrack-third-gallery.png 1448w" width="1448" height="1086" loading="lazy" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/habtrack-third-gallery-optimized.webp" alt="" srcset="images/habtrack-third-gallery-optimized.webp 1448w" width="1448" height="1086" loading="lazy" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="25672076689506">
@@ -2156,7 +2204,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 <div class="product-media-container media-type-image media-fit-contain global-media-settings gradient constrain-height" style="--ratio: 1.3214285714285714; --preview-ratio: 1.3214285714285714;">
   
   <noscript><div class="product__media media">
-        <img src="//sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1946" alt="" srcset="//sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=246 246w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=493 493w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=600 600w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=713 713w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=823 823w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=990 990w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1100 1100w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1206 1206w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1346 1346w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1426 1426w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1646 1646w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1946 1946w" width="1946" height="1473" loading="lazy" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="//sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1946" alt="" srcset="//sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=246 246w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=493 493w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=600 600w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=713 713w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=823 823w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=990 990w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1100 1100w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1206 1206w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1346 1346w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1426 1426w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1646 1646w, //sharpkit.co/cdn/shop/files/TaskTracker.png?v=1776887241&width=1946 1946w" width="1946" height="1473" loading="lazy" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       </div></noscript>
 
   <modal-opener class="product__modal-opener product__modal-opener--image no-js-hidden" data-modal="#ProductModal-template--18647385702498__main">
@@ -2168,7 +2216,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 </span>
     <div class="product__media media media--transparent">
       
-        <img src="images/TaskTracker.png" alt="" srcset="images/TaskTracker_14.png 246w, images/TaskTracker_13.png 493w, images/TaskTracker_16.png 600w, images/TaskTracker_15.png 713w, images/TaskTracker_22.png 823w, images/TaskTracker_3.png 990w, images/TaskTracker_8.png 1100w, images/TaskTracker_19.png 1206w, images/TaskTracker_18.png 1346w, images/TaskTracker_20.png 1426w, images/TaskTracker_21.png 1646w, images/TaskTracker.png 1946w" width="1946" height="1473" loading="lazy" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)">
+        <img src="images/TaskTracker.png" alt="" srcset="images/TaskTracker_14.png 246w, images/TaskTracker_13.png 493w, images/TaskTracker_16.png 600w, images/TaskTracker_15.png 713w, images/TaskTracker_22.png 823w, images/TaskTracker_3.png 990w, images/TaskTracker_8.png 1100w, images/TaskTracker_19.png 1206w, images/TaskTracker_18.png 1346w, images/TaskTracker_20.png 1426w, images/TaskTracker_21.png 1646w, images/TaskTracker.png 1946w" width="1946" height="1473" loading="lazy" class="image-magnify-none" sizes="(min-width: 1400px) 715px, (min-width: 990px) calc(55.0vw - 10rem), (min-width: 750px) calc((100vw - 11.5rem) / 2), calc(100vw / 1 - 4rem)" decoding="async">
       
     </div>
     <button class="product__media-toggle quick-add-hidden product__media-zoom-none" type="button" aria-haspopup="dialog" data-media-id="25672078229602">
@@ -2220,11 +2268,11 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
       <ul id="Slider-Thumbnails-template--18647385702498__main" class="thumbnail-list list-unstyled slider slider--mobile slider--tablet-up"><li id="Slide-Thumbnails-template--18647385702498__main-1" class="thumbnail-list__item slider__slide" data-target="template--18647385702498__main-25815934468194" data-media-position="1" data-alt="HabTrack Habit System (Updated May 2026)">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 1 in gallery view" aria-current="true" aria-controls="GalleryViewer-template--18647385702498__main" aria-describedby="Thumbnail-template--18647385702498__main-1
 ">
-                <img src="images/habtrack-first-gallery.png" alt="HabTrack Habit System (Updated May 2026)" srcset="images/habtrack-first-gallery.png 416w" width="416" height="234" loading="lazy" sizes="(min-width: 1400px) calc((715 - 4rem) / 4),
+                <img src="images/habtrack-first-gallery-optimized.webp" alt="HabTrack Habit System (Updated May 2026)" srcset="images/habtrack-first-gallery-optimized.webp 416w" width="416" height="234" loading="lazy" sizes="(min-width: 1400px) calc((715 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--18647385702498__main-1
-">
+" decoding="async">
               </button>
             </li><li id="Slide-Thumbnails-template--18647385702498__main-2" class="thumbnail-list__item slider__slide" data-target="template--18647385702498__main-25657493553250" data-media-position="2" data-alt="HabTrack Habit System (Updated May 2026)">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 2 in gallery view" aria-controls="GalleryViewer-template--18647385702498__main" aria-describedby="Thumbnail-template--18647385702498__main-2
@@ -2233,16 +2281,16 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--18647385702498__main-2
-">
+" decoding="async">
               </button>
             </li><li id="Slide-Thumbnails-template--18647385702498__main-3" class="thumbnail-list__item slider__slide" data-target="template--18647385702498__main-25672076689506" data-media-position="3" data-alt="HabTrack Habit System (Updated May 2026)">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 3 in gallery view" aria-controls="GalleryViewer-template--18647385702498__main" aria-describedby="Thumbnail-template--18647385702498__main-3
 ">
-                <img src="images/habtrack-third-gallery.png" alt="HabTrack Habit System (Updated May 2026)" srcset="images/habtrack-third-gallery.png 416w" width="416" height="312" loading="lazy" sizes="(min-width: 1400px) calc((715 - 4rem) / 4),
+                <img src="images/habtrack-third-gallery-optimized.webp" alt="HabTrack Habit System (Updated May 2026)" srcset="images/habtrack-third-gallery-optimized.webp 416w" width="416" height="312" loading="lazy" sizes="(min-width: 1400px) calc((715 - 4rem) / 4),
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--18647385702498__main-3
-">
+" decoding="async">
               </button>
             </li><li id="Slide-Thumbnails-template--18647385702498__main-4" class="thumbnail-list__item slider__slide" data-target="template--18647385702498__main-25672078229602" data-media-position="4" data-alt="HabTrack Habit System (Updated May 2026)">
               <button class="thumbnail global-media-settings global-media-settings--no-shadow" aria-label="Load image 4 in gallery view" aria-controls="GalleryViewer-template--18647385702498__main" aria-describedby="Thumbnail-template--18647385702498__main-4
@@ -2251,7 +2299,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
           (min-width: 990px) calc((55.0vw - 4rem) / 4),
           (min-width: 750px) calc((100vw - 15rem) / 8),
           calc((100vw - 8rem) / 3)" id="Thumbnail-template--18647385702498__main-4
-">
+" decoding="async">
               </button>
             </li></ul>
       <button type="button" class="slider-button slider-button--next medium-hide large-up-hide" name="next" aria-label="Slide right" aria-controls="GalleryThumbnails-template--18647385702498__main" data-step="3">
@@ -2410,7 +2458,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
         
         <div class="product-form__under-container"></div>
       </div><script type="application/json">
-      [{"id":42773104885858,"title":"Habit Tracker","option1":"Habit Tracker","option2":null,"option3":null,"sku":null,"requires_shipping":true,"taxable":true,"featured_image":{"id":34646667526242,"product_id":7567802237026,"position":2,"created_at":"2026-04-21T09:28:53-04:00","updated_at":"2026-04-21T09:28:55-04:00","alt":null,"width":2592,"height":1632,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/HabitTracker1210.png?v=1776778135","variant_ids":[42773104885858]},"available":true,"name":"HabTrack Habit System (Updated May 2026) - Habit Tracker","public_title":"Habit Tracker","options":["Habit Tracker"],"price": 990,"weight":0,"compare_at_price":3300,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25657493553250,"position":2,"preview_image":{"aspect_ratio":1.588,"height":1632,"width":2592,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/HabitTracker1210.png?v=1776778135"}},"requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":42773104918626,"title":"Task Tracker","option1":"Task Tracker","option2":null,"option3":null,"sku":null,"requires_shipping":true,"taxable":true,"featured_image":{"id":34661482332258,"product_id":7567802237026,"position":4,"created_at":"2026-04-22T15:47:19-04:00","updated_at":"2026-04-22T15:47:21-04:00","alt":null,"width":2368,"height":1792,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/TaskTracker.png?v=1776887241","variant_ids":[42773104918626]},"available":true,"name":"HabTrack Habit System (Updated May 2026) - Task Tracker","public_title":"Task Tracker","options":["Task Tracker"],"price": 990,"weight":0,"compare_at_price":3300,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25672078229602,"position":4,"preview_image":{"aspect_ratio":1.321,"height":1792,"width":2368,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/TaskTracker.png?v=1776887241"}},"requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":42773104951394,"title":"Habit + Task Tracker","option1":"Habit + Task Tracker","option2":null,"option3":null,"sku":null,"requires_shipping":true,"taxable":true,"featured_image":{"id":34809438797922,"product_id":7567802237026,"position":1,"created_at":"2026-05-13T10:01:20-04:00","updated_at":"2026-05-13T10:01:22-04:00","alt":null,"width":2048,"height":1152,"src":"images/habtrack-first-gallery.png","variant_ids":[42773104951394]},"available":true,"name":"HabTrack Habit System (Updated May 2026) - Habit + Task Tracker","public_title":"Habit + Task Tracker","options":["Habit + Task Tracker"],"price": 990,"weight":0,"compare_at_price":3300,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25815934468194,"position":1,"preview_image":{"aspect_ratio":1.778,"height":1152,"width":2048,"src":"images/habtrack-first-gallery.png"}},"requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}}]
+      [{"id":42773104885858,"title":"Habit Tracker","option1":"Habit Tracker","option2":null,"option3":null,"sku":null,"requires_shipping":true,"taxable":true,"featured_image":{"id":34646667526242,"product_id":7567802237026,"position":2,"created_at":"2026-04-21T09:28:53-04:00","updated_at":"2026-04-21T09:28:55-04:00","alt":null,"width":2592,"height":1632,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/HabitTracker1210.png?v=1776778135","variant_ids":[42773104885858]},"available":true,"name":"HabTrack Habit System (Updated May 2026) - Habit Tracker","public_title":"Habit Tracker","options":["Habit Tracker"],"price": 990,"weight":0,"compare_at_price":3300,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25657493553250,"position":2,"preview_image":{"aspect_ratio":1.588,"height":1632,"width":2592,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/HabitTracker1210.png?v=1776778135"}},"requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":42773104918626,"title":"Task Tracker","option1":"Task Tracker","option2":null,"option3":null,"sku":null,"requires_shipping":true,"taxable":true,"featured_image":{"id":34661482332258,"product_id":7567802237026,"position":4,"created_at":"2026-04-22T15:47:19-04:00","updated_at":"2026-04-22T15:47:21-04:00","alt":null,"width":2368,"height":1792,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/TaskTracker.png?v=1776887241","variant_ids":[42773104918626]},"available":true,"name":"HabTrack Habit System (Updated May 2026) - Task Tracker","public_title":"Task Tracker","options":["Task Tracker"],"price": 990,"weight":0,"compare_at_price":3300,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25672078229602,"position":4,"preview_image":{"aspect_ratio":1.321,"height":1792,"width":2368,"src":"\/\/sharpkit.co\/cdn\/shop\/files\/TaskTracker.png?v=1776887241"}},"requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}},{"id":42773104951394,"title":"Habit + Task Tracker","option1":"Habit + Task Tracker","option2":null,"option3":null,"sku":null,"requires_shipping":true,"taxable":true,"featured_image":{"id":34809438797922,"product_id":7567802237026,"position":1,"created_at":"2026-05-13T10:01:20-04:00","updated_at":"2026-05-13T10:01:22-04:00","alt":null,"width":2048,"height":1152,"src":"images/habtrack-first-gallery-optimized.webp","variant_ids":[42773104951394]},"available":true,"name":"HabTrack Habit System (Updated May 2026) - Habit + Task Tracker","public_title":"Habit + Task Tracker","options":["Habit + Task Tracker"],"price": 990,"weight":0,"compare_at_price":3300,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25815934468194,"position":1,"preview_image":{"aspect_ratio":1.778,"height":1152,"width":2048,"src":"images/habtrack-first-gallery-optimized.webp"}},"requires_selling_plan":false,"selling_plan_allocations":[],"quantity_rule":{"min":1,"max":null,"increment":1}}]
     </script>
   </variant-selects><noscript class="product-form__noscript-wrapper-template--18647385702498__main" style="--margin-top: 1.5rem;--margin-bottom: 1.5rem;">
   <div class="product-form__input">
@@ -2539,7 +2587,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 <div class="product__description rte quick-add-hidden" style="--margin-top: 2.4rem;--margin-bottom: 2.4rem;">
                   <h1>
 <meta charset="utf-8">The Daily Habit System That 15,000+ People Use to Stay Consistent</h1>
-<p><img alt="" src="images/Video_3.gif"></p>
+<p><img alt="" src="images/Video_3-optimized.webp" loading="lazy" decoding="async"></p>
 <p><strong>Build consistency. Build momentum. Build the life you said you wanted.</strong></p>
 <ul>
 <li data-start="204" data-end="283">🔁 <meta charset="utf-8"> <strong>See your streak grow every day so quitting feels harder than continuing.</strong><br data-start="1498" data-end="1501">Visual cues + streaks = stronger follow-through.</li>
@@ -2578,7 +2626,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
           <div class="splide__slide__container">
       
           <div class="review-item review-item--top custom-border-radius custom-border-hex color-background-1"><div class="review-item__image media media--transparent custom-border-radius" style="--border-radius: 4.0rem;">
-                <img src="images/Gemini_Generated_Image_atnh4ratnh4ratnh.png" alt="files/Gemini_Generated_Image_atnh4ratnh4ratnh.png" width="auto" height="auto" loading="lazy">
+                <img src="images/Gemini_Generated_Image_atnh4ratnh4ratnh-optimized.webp" alt="files/Gemini_Generated_Image_atnh4ratnh4ratnh.png" width="auto" height="auto" loading="lazy" decoding="async">
               </div><div class="review-item__right">
               <div class="review-item__text">
                 <p>Game changer. Finally a habit tracker that keeps me dialed in and actually consistent.</p>
@@ -2615,7 +2663,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
           <div class="splide__slide__container">
       
           <div class="review-item review-item--top custom-border-radius custom-border-hex color-background-1"><div class="review-item__image media media--transparent custom-border-radius" style="--border-radius: 4.0rem;">
-                <img src="images/Gemini_Generated_Image_k06o91k06o91k06o.png" alt="files/Gemini_Generated_Image_k06o91k06o91k06o.png" width="auto" height="auto" loading="lazy">
+                <img src="images/Gemini_Generated_Image_k06o91k06o91k06o-optimized.webp" alt="files/Gemini_Generated_Image_k06o91k06o91k06o.png" width="auto" height="auto" loading="lazy" decoding="async">
               </div><div class="review-item__right">
               <div class="review-item__text">
                 <p>Helps me stay locked in with my work and gym goals. My weekly progress has never looked better.</p>
@@ -2652,7 +2700,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
           <div class="splide__slide__container">
       
           <div class="review-item review-item--top custom-border-radius custom-border-hex color-background-1"><div class="review-item__image media media--transparent custom-border-radius" style="--border-radius: 4.0rem;">
-                <img src="images/Gemini_Generated_Image_f52nj8f52nj8f52n.png" alt="files/Gemini_Generated_Image_f52nj8f52nj8f52n.png" width="auto" height="auto" loading="lazy">
+                <img src="images/Gemini_Generated_Image_f52nj8f52nj8f52n-optimized.webp" alt="files/Gemini_Generated_Image_f52nj8f52nj8f52n.png" width="auto" height="auto" loading="lazy" decoding="async">
               </div><div class="review-item__right">
               <div class="review-item__text">
                 <p>Used it consistently for a whole year and it’s been clutch. The newsletter keeps me dialed in and reminds me to keep leveling up</p>
@@ -2960,10 +3008,10 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
     </button>
 
     <div class="product-media-modal__content color-background-1 gradient" role="document" aria-label="Media gallery" tabindex="0">
-<img class="global-media-settings global-media-settings--no-shadow" srcset="images/habtrack-first-gallery.png 1100w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/habtrack-first-gallery.png" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="619" data-media-id="25815934468194">
-<img class="global-media-settings global-media-settings--no-shadow" srcset="images/HabitTracker1210_9.png 550w, images/HabitTracker1210_6.png 1100w, images/HabitTracker1210_2.png 1445w, images/HabitTracker1210_11.png 1680w, images/HabitTracker1210_22.png 2048w, images/HabitTracker1210_24.png 2200w, images/HabitTracker1210_23.png 2592w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/HabitTracker1210_2.png" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="693" data-media-id="25657493553250">
-<img class="global-media-settings global-media-settings--no-shadow" srcset="images/habtrack-third-gallery.png 1100w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/habtrack-third-gallery.png" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="825" data-media-id="25672076689506">
-<img class="global-media-settings global-media-settings--no-shadow" srcset="images/TaskTracker_17.png 550w, images/TaskTracker_8.png 1100w, images/TaskTracker_2.png 1445w, images/TaskTracker_11.png 1680w, images/TaskTracker_23.png 2048w, images/TaskTracker_24.png 2200w, images/TaskTracker_12.png 2368w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/TaskTracker_2.png" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="833" data-media-id="25672078229602"></div>
+<img class="global-media-settings global-media-settings--no-shadow" srcset="images/habtrack-first-gallery-optimized.webp 1100w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/habtrack-first-gallery-optimized.webp" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="619" data-media-id="25815934468194" decoding="async">
+<img class="global-media-settings global-media-settings--no-shadow" srcset="images/HabitTracker1210_9.png 550w, images/HabitTracker1210_6.png 1100w, images/HabitTracker1210_2.png 1445w, images/HabitTracker1210_11.png 1680w, images/HabitTracker1210_22.png 2048w, images/HabitTracker1210_24.png 2200w, images/HabitTracker1210_23.png 2592w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/HabitTracker1210_2.png" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="693" data-media-id="25657493553250" decoding="async">
+<img class="global-media-settings global-media-settings--no-shadow" srcset="images/habtrack-third-gallery-optimized.webp 1100w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/habtrack-third-gallery-optimized.webp" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="825" data-media-id="25672076689506" decoding="async">
+<img class="global-media-settings global-media-settings--no-shadow" srcset="images/TaskTracker_17.png 550w, images/TaskTracker_8.png 1100w, images/TaskTracker_2.png 1445w, images/TaskTracker_11.png 1680w, images/TaskTracker_23.png 2048w, images/TaskTracker_24.png 2200w, images/TaskTracker_12.png 2368w" sizes="(min-width: 750px) calc(100vw - 22rem), 1100px" src="images/TaskTracker_2.png" alt="HabTrack Habit System (Updated May 2026)" loading="lazy" width="1100" height="833" data-media-id="25672078229602" decoding="async"></div>
   </div>
 </product-modal>
 
@@ -3077,7 +3125,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                       
                       <div class="image-slide__image media media--transparent ratio" style="--ratio-percent: 177.77777777777777%">
                         
-<img src="images/Video_1.gif" alt="" srcset="images/Video_1_1.gif 375w, images/Video_1_2.gif 550w, images/Video_1_7.gif 750w, images/Video_1_8.gif 1100w, images/Video_1_4.gif 1500w, images/Video_1_6.gif 1780w, images/Video_1_5.gif 2000w, images/Video_1_3.gif 3000w, images/Video_1.gif 3840w" height="1280.0" loading="lazy" sizes="(min-width: 1400px)
+<img src="images/Video_1-optimized.webp" alt="" loading="lazy" decoding="async" height="1280.0" sizes="(min-width: 1400px)
                             433px, (min-width: 768px)
                               calc(100vw / 3)
                             ,  calc(100vw / 2) 
@@ -3095,7 +3143,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                       
                       <div class="image-slide__image media media--transparent ratio" style="--ratio-percent: 177.77777777777777%">
                         
-<img src="images/Video_2.gif" alt="" srcset="images/Video_2_1.gif 375w, images/Video_2_2.gif 550w, images/Video_2_4.gif 750w, images/Video_2_8.gif 1100w, images/Video_2_6.gif 1500w, images/Video_2_5.gif 1780w, images/Video_2_7.gif 2000w, images/Video_2_3.gif 3000w, images/Video_2.gif 3840w" height="1280.0" loading="lazy" sizes="(min-width: 1400px)
+<img src="images/Video_2-optimized.webp" alt="" loading="lazy" decoding="async" height="1280.0" sizes="(min-width: 1400px)
                             433px, (min-width: 768px)
                               calc(100vw / 3)
                             ,  calc(100vw / 2) 
@@ -3113,7 +3161,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                       
                       <div class="image-slide__image media media--transparent ratio" style="--ratio-percent: 177.77777777777777%">
                         
-<img src="images/Video_3_1.gif" alt="" srcset="images/Video_3_9.gif 375w, images/Video_3_2.gif 550w, images/Video_3_6.gif 750w, images/Video_3_3.gif 1100w, images/Video_3_7.gif 1500w, images/Video_3_5.gif 1780w, images/Video_3_4.gif 2000w, images/Video_3_8.gif 3000w, images/Video_3_1.gif 3840w" height="1280.0" loading="lazy" sizes="(min-width: 1400px)
+<img src="images/Video_3-optimized.webp" alt="" loading="lazy" decoding="async" height="1280.0" sizes="(min-width: 1400px)
                             433px, (min-width: 768px)
                               calc(100vw / 3)
                             ,  calc(100vw / 2) 
@@ -3182,7 +3230,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                         <div class="media media--transparent media--square">
                           
 <img src="images/aecb36cf-eede-4422-a4a4-a59c860203e6.png" alt="" srcset="images/aecb36cf-eede-4422-a4a4-a59c860203e6_1.png 275w, images/aecb36cf-eede-4422-a4a4-a59c860203e6_3.png 550w, images/aecb36cf-eede-4422-a4a4-a59c860203e6_2.png 710w, images/aecb36cf-eede-4422-a4a4-a59c860203e6.png 1420w" width="1420" height="1420" loading="lazy" sizes="(min-width: 990px) 550px, (min-width:
-                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image">
+                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image" decoding="async">
                           
                         </div>
                       </div><div class="multicolumn-card__info"><p class="testimonial-card__stars" style="--stars-color:#ffd700">★★★★★</p><div class="testimonial-card__quotes flex-center color-accent-2">
@@ -3237,7 +3285,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                         <div class="media media--transparent media--square">
                           
 <img src="images/e92b8654-222a-455e-9850-05655c28d9b9.png" alt="" srcset="images/e92b8654-222a-455e-9850-05655c28d9b9_2.png 275w, images/e92b8654-222a-455e-9850-05655c28d9b9_1.png 550w, images/e92b8654-222a-455e-9850-05655c28d9b9_3.png 710w, images/e92b8654-222a-455e-9850-05655c28d9b9.png 1420w" width="1420" height="1366" loading="lazy" sizes="(min-width: 990px) 550px, (min-width:
-                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image">
+                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image" decoding="async">
                           
                         </div>
                       </div><div class="multicolumn-card__info"><p class="testimonial-card__stars" style="--stars-color:#ffd700">★★★★★</p><div class="testimonial-card__quotes flex-center color-accent-2">
@@ -3257,7 +3305,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                         <div class="media media--transparent media--square">
                           
 <img src="images/Gemini_Generated_Image_pt34nqpt34nqpt34.png" alt="" srcset="images/Gemini_Generated_Image_pt34nqpt34nqpt34_2.png 275w, images/Gemini_Generated_Image_pt34nqpt34nqpt34_1.png 550w, images/Gemini_Generated_Image_pt34nqpt34nqpt34_3.png 710w, images/Gemini_Generated_Image_pt34nqpt34nqpt34.png 1420w" width="1420" height="1675" loading="lazy" sizes="(min-width: 990px) 550px, (min-width:
-                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image">
+                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image" decoding="async">
                           
                         </div>
                       </div><div class="multicolumn-card__info"><p class="testimonial-card__stars" style="--stars-color:#ffd700">★★★★★</p><div class="testimonial-card__quotes flex-center color-accent-2">
@@ -3277,7 +3325,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                         <div class="media media--transparent media--square">
                           
 <img src="images/Gemini_Generated_Image_5vn3u65vn3u65vn3.png" alt="" srcset="images/Gemini_Generated_Image_5vn3u65vn3u65vn3_3.png 275w, images/Gemini_Generated_Image_5vn3u65vn3u65vn3_1.png 550w, images/Gemini_Generated_Image_5vn3u65vn3u65vn3_2.png 710w, images/Gemini_Generated_Image_5vn3u65vn3u65vn3.png 1420w" width="1420" height="1109" loading="lazy" sizes="(min-width: 990px) 550px, (min-width:
-                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image">
+                              750px) 550px, calc(100vw - 30px)" class="multicolumn-card__image" decoding="async">
                           
                         </div>
                       </div><div class="multicolumn-card__info"><p class="testimonial-card__stars" style="--stars-color:#ffd700">★★★★★</p><div class="testimonial-card__quotes flex-center color-accent-2">
@@ -3464,7 +3512,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
     <div class="image-with-text__grid grid grid--gapless grid--1-col grid--2-col-tablet image-with-text__grid--reverse animate-item">
       <div class="image-with-text__media-item image-with-text__media-item--medium image-with-text__media-item--top grid__item">
         <div class="image-with-text__media image-with-text__media--adapt gradient color-scheme-template--18647385702498__image_with_text_tTAKNq color-background-1 global-media-settings media" style="padding-bottom: 125.85291887793781%;"><img src="images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited.png" alt="" srcset="images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited_1.png 165w, images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited_3.png 360w, images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited_4.png 535w, images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited_2.png 750w, images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited_5.png 1070w, images/Gemini_Generated_Image_2wvs9a2wvs9a2wvs_-_Edited.png 1500w" width="1500" height="1888" loading="lazy" sizes="(min-width: 1400px) 650px,
-              (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)">
+              (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)" decoding="async">
 </div>
       </div>
       <div class="image-with-text__text-item grid__item">
@@ -3631,7 +3679,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
                         <div class="media media--transparent ratio" style="--ratio-percent: 62.96296296296297%">
                           
 <img src="images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651.png" alt="" srcset="images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651_1.png 165w, images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651_2.png 360w, images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651_4.png 535w, images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651_3.png 750w, images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651_5.png 1070w, images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651_6.png 1250w, images/Laptop_Mockup_9d029c27-09d5-4825-a69c-52d63936f651.png 1500w" width="1500" height="944" loading="lazy" sizes="(min-width: 1400px) calc(466.6666666666667px * 1.0),
-                            (min-width: 750px) calc((100vw - 30px) / 12 * 4 * 1.0), calc((100vw - 30px) / 4 * 4 * 1.0)">
+                            (min-width: 750px) calc((100vw - 30px) / 12 * 4 * 1.0), calc((100vw - 30px) / 4 * 4 * 1.0)" decoding="async">
                         </div>
                       
                     </div>
@@ -4244,7 +4292,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
       list.innerHTML = '' +
         '<div class="habtrack-cart-item">' +
-          '<img src="' + PRODUCT.image + '" alt="' + PRODUCT.title + '">' +
+          '<img src="' + PRODUCT.image + '" alt="' + PRODUCT.title + '" decoding="async">' +
           '<div class="habtrack-cart-item__content">' +
             '<strong>' + PRODUCT.title + '</strong>' +
             '<span>' + PRODUCT.subtitle + '</span>' +
@@ -4316,4 +4364,76 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 </script>
   <style>  </style>
 
+
+<script id="habtrack-scroll-motion">
+(function () {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function splitLetters(el) {
+    if (!el || el.dataset.habtrackSplit === 'true') return;
+    var text = el.textContent;
+    if (!text || text.trim().length < 3 || text.length > 120) return;
+    el.dataset.habtrackSplit = 'true';
+    el.textContent = '';
+    var index = 0;
+    text.split(/(\s+)/).forEach(function (part) {
+      if (/^\s+$/.test(part)) {
+        el.appendChild(document.createTextNode(part));
+        return;
+      }
+      var word = document.createElement('span');
+      word.className = 'habtrack-word';
+      part.split('').forEach(function (char) {
+        var span = document.createElement('span');
+        span.className = 'habtrack-letter';
+        span.style.setProperty('--letter-index', index++);
+        span.textContent = char;
+        word.appendChild(span);
+      });
+      el.appendChild(word);
+    });
+  }
+
+  function bootMotion() {
+    var revealTargets = Array.prototype.slice.call(document.querySelectorAll([
+      '#MainProduct-template--18647385702498__main .product__media-wrapper',
+      '#MainProduct-template--18647385702498__main .product__info-wrapper',
+      '.shopify-section:not(.section-header):not(.announcement-bar-section)',
+      '.multicolumn-card',
+      '.image-with-text__media',
+      '.image-with-text__text-item',
+      '.rich-text__blocks',
+      '.product__description li'
+    ].join(',')));
+
+    revealTargets.forEach(function (el, i) {
+      if (el.classList.contains('habtrack-reveal')) return;
+      el.classList.add('habtrack-reveal');
+      if (i % 5 === 1) el.classList.add('habtrack-reveal--left');
+      if (i % 5 === 2) el.classList.add('habtrack-reveal--right');
+      if (i % 5 === 3) el.classList.add('habtrack-reveal--zoom');
+      el.style.setProperty('--habtrack-delay', Math.min((i % 6) * 70, 280) + 'ms');
+    });
+
+    document.querySelectorAll('h1, h2, .product__title, .rich-text__heading').forEach(function (el) {
+      splitLetters(el);
+      el.classList.add('habtrack-reveal');
+    });
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    document.querySelectorAll('.habtrack-reveal').forEach(function (el) { observer.observe(el); });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootMotion);
+  else bootMotion();
+})();
+</script>
 </body></html>

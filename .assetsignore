@@ -10,3 +10,9 @@ mobile-*.png
 .gitignore
 .assetsignore
 wrangler.toml
+images/Video_*.gif
+images/habtrack-first-gallery.png
+images/habtrack-third-gallery.png
+images/Gemini_Generated_Image_atnh4ratnh4ratnh.png
+images/Gemini_Generated_Image_k06o91k06o91k06o.png
+images/Gemini_Generated_Image_f52nj8f52nj8f52n.png
