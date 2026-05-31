@@ -39,7 +39,10 @@ async function createCheckoutSession(request, env) {
   form.set("mode", "payment");
   form.set("ui_mode", "custom");
   form.set("return_url", `${origin}/checkout/success/?session_id={CHECKOUT_SESSION_ID}`);
-  form.set("line_items[0][price]", env.STRIPE_PRICE_ID);
+  form.set("line_items[0][price_data][currency]", "usd");
+  form.set("line_items[0][price_data][unit_amount]", "990");
+  form.set("line_items[0][price_data][product_data][name]", "HabTrack - Habit + Task Tracker");
+  form.set("line_items[0][price_data][product_data][description]", "Instant digital download with lifetime access.");
   form.set("line_items[0][quantity]", "1");
   form.set("metadata[product]", "habtrack-habit-task-system");
   form.set("metadata[source]", "habtrack-custom-checkout");
@@ -82,7 +85,6 @@ async function getCheckoutSession(url, env) {
 
 function requiredStripeConfig(env) {
   if (!env.STRIPE_SECRET_KEY) return "Stripe secret is not configured.";
-  if (!env.STRIPE_PRICE_ID) return "Stripe price is not configured.";
   if (!env.STRIPE_PUBLISHABLE_KEY || env.STRIPE_PUBLISHABLE_KEY.includes("REPLACE_WITH")) {
     return "Stripe publishable key is not configured.";
   }

@@ -9,5 +9,4 @@ not_found_handling = "single-page-application"
 run_worker_first = [ "/api/*" ]
 
 [vars]
-STRIPE_PRICE_ID = "price_1TcthPHDyX8ddgVapnXEAqqu"
-STRIPE_PUBLISHABLE_KEY = "pk_test_REPLACE_WITH_YOUR_STRIPE_PUBLISHABLE_KEY"
+STRIPE_PUBLISHABLE_KEY = "pk_test_51TctSYHWIgUdUt81xYECQy12U2BSEcAAuLm9wraBUfStW8Vm5r3KEjiJdwcq4HjnelSR8BwIDnRQSefFoGRaXV2H00qf8ZVJ0l"
