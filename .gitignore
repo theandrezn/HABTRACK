@@ -1,6 +1,8 @@
 local-render*.png
 mobile-*.png
 perf-check*.png
+checkout-ui-*.png
+.chrome-checkout-*/
 .wrangler-dry-run/
 .wrangler/
 .DS_Store

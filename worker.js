@@ -38,6 +38,7 @@ async function createCheckoutSession(request, env) {
   const form = new URLSearchParams();
   form.set("mode", "payment");
   form.set("ui_mode", "custom");
+  form.set("allow_promotion_codes", "true");
   form.set("return_url", `${origin}/checkout/success/?session_id={CHECKOUT_SESSION_ID}`);
   form.set("line_items[0][price_data][currency]", "usd");
   form.set("line_items[0][price_data][unit_amount]", "990");

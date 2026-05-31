@@ -1,11 +1,19 @@
 (async function () {
+  const form = document.querySelector("#checkout-form");
   const payButton = document.querySelector("#pay-button");
   const emailInput = document.querySelector("#email");
   const emailErrors = document.querySelector("#email-errors");
   const confirmErrors = document.querySelector("#confirm-errors");
+  const couponToggle = document.querySelector("#coupon-toggle");
+  const couponPanel = document.querySelector("#coupon-panel");
+  const couponInput = document.querySelector("#coupon-code");
+  const couponMessage = document.querySelector("#coupon-message");
+  const applyCoupon = document.querySelector("#apply-coupon");
+  const removeCoupon = document.querySelector("#remove-coupon");
 
-  function setError(element, message) {
+  function setMessage(element, message, success) {
     element.textContent = message || "";
+    element.classList.toggle("is-success", Boolean(success));
   }
 
   function attribution() {
@@ -16,6 +24,13 @@
         return values;
       }, {});
   }
+
+  couponToggle.addEventListener("click", () => {
+    const expanded = couponToggle.getAttribute("aria-expanded") === "true";
+    couponToggle.setAttribute("aria-expanded", String(!expanded));
+    couponPanel.hidden = expanded;
+    if (!expanded) couponInput.focus();
+  });
 
   try {
     const configResponse = await fetch("/api/stripe-config", { cache: "no-store" });
@@ -43,25 +58,25 @@
           theme: "night",
           variables: {
             colorPrimary: "#00a3ff",
-            colorBackground: "#101115",
-            colorText: "#ffffff",
-            colorDanger: "#ff7b7b",
-            colorTextSecondary: "#b7bcc8",
-            borderRadius: "5px",
+            colorBackground: "#111216",
+            colorText: "#f7f8fb",
+            colorDanger: "#ff9696",
+            colorTextSecondary: "#aeb4bf",
+            borderRadius: "6px",
             fontFamily: "Poppins, Arial, sans-serif",
             spacingUnit: "4px",
           },
           rules: {
             ".Input": {
-              border: "1px solid #3b3e49",
+              border: "1px solid #444752",
               boxShadow: "none",
             },
             ".Input:focus": {
               border: "1px solid #00a3ff",
-              boxShadow: "0 0 0 3px rgba(0, 163, 255, .15)",
+              boxShadow: "0 0 0 3px rgba(0, 163, 255, .16)",
             },
             ".Tab": {
-              border: "1px solid #3b3e49",
+              border: "1px solid #444752",
             },
           },
         },
@@ -74,43 +89,72 @@
 
     const result = await checkout.loadActions();
     if (result.type !== "success") throw new Error("Unable to load payment options.");
-
     const { actions } = result;
+
     const paymentElement = checkout.createPaymentElement({
       layout: { type: "accordion", defaultCollapsed: false, radios: true },
     });
     paymentElement.mount("#payment-element");
 
-    emailInput.addEventListener("input", () => setError(emailErrors, ""));
+    emailInput.addEventListener("input", () => setMessage(emailErrors, ""));
     emailInput.addEventListener("blur", async () => {
       if (!emailInput.value.trim()) return;
       const result = await actions.updateEmail(emailInput.value.trim());
-      if (result.error) setError(emailErrors, result.error.message);
+      if (result.error) setMessage(emailErrors, result.error.message);
     });
 
-    payButton.addEventListener("click", async () => {
-      setError(confirmErrors, "");
+    applyCoupon.addEventListener("click", async () => {
+      const code = couponInput.value.trim();
+      if (!code) {
+        setMessage(couponMessage, "Enter a coupon code to continue.");
+        return;
+      }
+
+      applyCoupon.disabled = true;
+      setMessage(couponMessage, "Applying coupon...");
+      const result = await actions.applyPromotionCode(code);
+      applyCoupon.disabled = false;
+
+      if (result.error) {
+        setMessage(couponMessage, result.error.message);
+        return;
+      }
+
+      couponInput.value = "";
+      removeCoupon.hidden = false;
+      setMessage(couponMessage, "Coupon applied.", true);
+    });
+
+    removeCoupon.addEventListener("click", async () => {
+      await actions.removePromotionCode();
+      removeCoupon.hidden = true;
+      setMessage(couponMessage, "Coupon removed.", true);
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      setMessage(confirmErrors, "");
       payButton.disabled = true;
-      payButton.textContent = "PROCESSING...";
+      payButton.textContent = "Processing...";
 
       const emailResult = await actions.updateEmail(emailInput.value.trim());
       if (emailResult.error) {
-        setError(emailErrors, emailResult.error.message);
-        payButton.textContent = "PAY $9.90";
+        setMessage(emailErrors, emailResult.error.message);
+        payButton.textContent = "Pay $9.90";
         payButton.disabled = false;
         return;
       }
 
       const result = await actions.confirm();
       if (result.type === "error") {
-        setError(confirmErrors, result.error.message);
-        payButton.textContent = "PAY $9.90";
+        setMessage(confirmErrors, result.error.message);
+        payButton.textContent = "Pay $9.90";
         payButton.disabled = false;
       }
     });
   } catch (error) {
-    setError(confirmErrors, error.message);
-    payButton.textContent = "CHECKOUT UNAVAILABLE";
+    setMessage(confirmErrors, error.message);
+    payButton.textContent = "Checkout unavailable";
     payButton.disabled = true;
   }
 })();
