@@ -2,13 +2,13 @@ const STRIPE_API = "https://api.stripe.com/v1";
 const STRIPE_VERSION = "2026-02-25.clover";
 const RESEND_API = "https://api.resend.com/emails";
 const ORDER_BUMPS = {
-  finance: ["Ultimate Money Planner Pack", "All-in-one money system: annual budget and monthly tracker.", 199],
-  adhd: ["ADHD Productivity Pack", "ADHD goal planner built for focus, structure, and consistent wins.", 199],
-  savings: ["52-Week Saving System", "Weekly savings challenge and planner for consistent saving.", 199],
-  clarity: ["Clear Mind PDF", "Brain dump system to capture, sort, and clear mental clutter fast.", 199],
-  fitness: ["Weight-Loss Planner Bundle", "Hit your goal weight with a proven tracker and meal planner combo.", 199],
-  wallpapers: ["100-Pack Motivational Quote Phone Wallpaper", "100+ wallpapers that rewire your phone into a focus tool.", 199],
-  updates: ["Lifetime Updates", "Receive future improvements to the HabTrack system.", 199],
+  finance: ["Ultimate Money Planner Pack", "All-in-one money system: annual budget and monthly tracker.", 199, "images/order-bumps/checkout-icons/budget-planner.jpg"],
+  adhd: ["ADHD Productivity Pack", "ADHD goal planner built for focus, structure, and consistent wins.", 199, "images/order-bumps/checkout-icons/focus-planner.jpg"],
+  savings: ["52-Week Saving System", "Weekly savings challenge and planner for consistent saving.", 199, "images/order-bumps/checkout-icons/goal-planner.jpg"],
+  clarity: ["Clear Mind PDF", "Brain dump system to capture, sort, and clear mental clutter fast.", 199, "images/order-bumps/checkout-icons/self-care-planner.jpg"],
+  fitness: ["Weight-Loss Planner Bundle", "Hit your goal weight with a proven tracker and meal planner combo.", 199, "images/order-bumps/checkout-icons/workout-planner.jpg"],
+  wallpapers: ["100-Pack Motivational Quote Phone Wallpaper", "100+ wallpapers that rewire your phone into a focus tool.", 199, "images/order-bumps/checkout-icons/meal-planner.jpg"],
+  updates: ["Lifetime Updates", "Receive future improvements to the HabTrack system.", 199, "images/order-bumps/checkout-icons/travel-planner.jpg"],
 };
 
 export default {
@@ -63,15 +63,17 @@ async function createCheckoutSession(request, env) {
   form.set("line_items[0][price_data][unit_amount]", "990");
   form.set("line_items[0][price_data][product_data][name]", "HabTrack - Habit + Task Tracker");
   form.set("line_items[0][price_data][product_data][description]", "Instant digital download with lifetime access.");
+  form.set("line_items[0][price_data][product_data][images][0]", `${origin}/images/habtrack-first-gallery-optimized.webp`);
   form.set("line_items[0][quantity]", "1");
   const selectedBumps = cleanOrderBumps(body.bumps);
   selectedBumps.forEach((id, offset) => {
-    const [name, description, amount] = ORDER_BUMPS[id];
+    const [name, description, amount, imagePath] = ORDER_BUMPS[id];
     const index = offset + 1;
     form.set(`line_items[${index}][price_data][currency]`, "usd");
     form.set(`line_items[${index}][price_data][unit_amount]`, String(amount));
     form.set(`line_items[${index}][price_data][product_data][name]`, name);
     form.set(`line_items[${index}][price_data][product_data][description]`, description);
+    form.set(`line_items[${index}][price_data][product_data][images][0]`, `${origin}/${imagePath}`);
     form.set(`line_items[${index}][quantity]`, "1");
   });
   form.set("metadata[product]", "habtrack-habit-task-system");
