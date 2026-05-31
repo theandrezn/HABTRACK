@@ -9,4 +9,4 @@ not_found_handling = "single-page-application"
 run_worker_first = [ "/api/*", "/checkout/checkout.js" ]
 
 [vars]
-STRIPE_PUBLISHABLE_KEY = "pk_test_51TctSYHWIgUdUt81xYECQy12U2BSEcAAuLm9wraBUfStW8Vm5r3KEjiJdwcq4HjnelSR8BwIDnRQSefFoGRaXV2H00qf8ZVJ0l"
+STRIPE_PUBLISHABLE_KEY = "pk_live_51TctSYHWIgUdUt81WJpIZZk0WFQP4ZA6tlL7yIsIZFy2xeCkxwRIuSrKJqexZDH5UpepQGLLQuX8qKND44WSydjX00RA2fy9pC"
