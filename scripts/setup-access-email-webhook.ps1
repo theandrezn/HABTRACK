@@ -127,12 +127,13 @@ if ($LASTEXITCODE -ne 0) {
 $testEmail = Read-Host "E-mail para teste agora (Enter para pular)"
 if (-not [string]::IsNullOrWhiteSpace($testEmail)) {
   Write-Host "Enviando evento webhook assinado de teste..." -ForegroundColor Cyan
+  $testSessionId = "cs_live_habtrack_manual_test_" + ([guid]::NewGuid().ToString("N").Substring(0, 16))
   $payloadObject = @{
     id = "evt_habtrack_test_" + ([guid]::NewGuid().ToString("N").Substring(0, 12))
     type = "checkout.session.completed"
     data = @{
       object = @{
-        id = "cs_live_habtrack_manual_test"
+        id = $testSessionId
         payment_status = "paid"
         customer_details = @{ email = $testEmail }
         metadata = @{ order_bumps = "finance,adhd,savings,clarity,fitness,wallpapers,updates" }
