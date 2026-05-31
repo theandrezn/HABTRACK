@@ -4,6 +4,8 @@
 .github/**
 node_modules
 node_modules/**
+.wrangler
+.wrangler/**
 local-render*.png
 mobile-*.png
 *.log
