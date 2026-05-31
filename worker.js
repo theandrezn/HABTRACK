@@ -118,6 +118,7 @@ async function handleStripeWebhook(request, env) {
     env,
     to: email,
     sessionId: session.id,
+    paymentIntent: session.payment_intent,
     orderBumps: session.metadata?.order_bumps || "",
   });
   if (!emailResult.ok) return json({ error: emailResult.error }, 502);
@@ -224,29 +225,118 @@ function safeEqual(left, right) {
   return result === 0;
 }
 
-async function sendAccessEmail({ env, to, sessionId, orderBumps }) {
-  const accessUrl = env.HABTRACK_ACCESS_URL;
+async function sendAccessEmail({ env, to, sessionId, paymentIntent, orderBumps }) {
+  const accessUrl = normalizeAccessUrl(env.HABTRACK_ACCESS_URL);
+  const accessLabel = formatAccessLabel(accessUrl);
+  const orderReference = paymentIntent || sessionId || "HabTrack order";
   const subject = "Your HabTrack access is ready";
-  const includedExtras = formatOrderBumps(orderBumps);
-  const bumpLine = includedExtras ? `<p><strong>Included extras:</strong> ${escapeHtml(includedExtras)}</p>` : "";
-  const html = `
-    <div style="font-family:Arial,sans-serif;line-height:1.55;color:#111827">
-      <h1 style="margin:0 0 16px">Welcome to HabTrack</h1>
-      <p>Your payment was confirmed and your HabTrack access is ready.</p>
-      <p><a href="${escapeHtml(accessUrl)}" style="display:inline-block;background:#00a3ff;color:#fff;padding:12px 18px;border-radius:6px;text-decoration:none;font-weight:700">Open HabTrack</a></p>
-      <p>If the button does not work, copy this link into your browser:</p>
-      <p><a href="${escapeHtml(accessUrl)}">${escapeHtml(accessUrl)}</a></p>
-      ${bumpLine}
-      <p style="color:#6b7280;font-size:13px">Order reference: ${escapeHtml(sessionId || "HabTrack order")}</p>
-    </div>`;
+  const preheader = "Payment confirmed. Your HabTrack dashboard and bonus materials are ready.";
+  const includedExtras = getOrderBumpNames(orderBumps);
+  const extrasHtml = includedExtras.length ? `
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <p style="margin:0 0 10px 0;font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#111827;font-weight:700;">Included with your order</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
+                  ${includedExtras.map((extra) => `
+                  <tr>
+                    <td style="padding:6px 0;font-family:Arial,sans-serif;font-size:14px;line-height:20px;color:#374151;">${escapeHtml(extra)}</td>
+                  </tr>`).join("")}
+                </table>
+              </td>
+            </tr>` : "";
+  const textExtras = includedExtras.length ? [
+    "Included with your order:",
+    ...includedExtras.map((extra) => `- ${extra}`),
+    "",
+  ] : [];
+  const replyTo = env.HABTRACK_REPLY_TO || extractEmailAddress(env.HABTRACK_FROM_EMAIL) || "access@habtrack.shop";
+  const html = `<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>${escapeHtml(subject)}</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f6f7fb;">
+    <span style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}</span>
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;background-color:#f6f7fb;">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;max-width:600px;background-color:#ffffff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+            <tr>
+              <td style="padding:28px 32px 14px 32px;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#111827;font-weight:700;">HabTrack</td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 12px 32px;">
+                <h1 style="margin:0;font-family:Arial,sans-serif;font-size:24px;line-height:32px;color:#111827;font-weight:700;">Your HabTrack access is ready</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <p style="margin:0;font-family:Arial,sans-serif;font-size:15px;line-height:24px;color:#374151;">Hi, your payment has been confirmed and your HabTrack access is now active.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;background-color:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;">
+                  <tr>
+                    <td style="padding:18px 20px;">
+                      <p style="margin:0 0 6px 0;font-family:Arial,sans-serif;font-size:13px;line-height:18px;color:#6b7280;">Access link</p>
+                      <p style="margin:0;font-family:Arial,sans-serif;font-size:16px;line-height:24px;color:#111827;font-weight:700;">${escapeHtml(accessLabel)}</p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 20px 32px;">
+                <a href="${escapeHtml(accessUrl)}" style="display:inline-block;background-color:#2563eb;color:#ffffff;font-family:Arial,sans-serif;font-size:15px;line-height:20px;font-weight:700;text-decoration:none;border-radius:8px;padding:13px 20px;">Open HabTrack</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 24px 32px;">
+                <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;">If the button does not work, copy and paste this link into your browser:</p>
+                <p style="margin:0;font-family:Arial,sans-serif;font-size:13px;line-height:20px;color:#2563eb;word-break:break-word;"><a href="${escapeHtml(accessUrl)}" style="color:#2563eb;text-decoration:underline;">${escapeHtml(accessLabel)}</a></p>
+              </td>
+            </tr>
+            ${extrasHtml}
+            <tr>
+              <td style="padding:0 32px 26px 32px;">
+                <p style="margin:0;font-family:Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;">Order reference: ${escapeHtml(orderReference)}</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:22px 32px 28px 32px;background-color:#f9fafb;border-top:1px solid #e5e7eb;">
+                <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:12px;line-height:18px;color:#6b7280;">You are receiving this email because a payment was confirmed for HabTrack.</p>
+                <p style="margin:0 0 8px 0;font-family:Arial,sans-serif;font-size:12px;line-height:18px;color:#6b7280;">Need help? Reply to this email or contact support.</p>
+                <p style="margin:0;font-family:Arial,sans-serif;font-size:12px;line-height:18px;color:#6b7280;">HabTrack &mdash; Digital access delivery</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
   const text = [
-    "Welcome to HabTrack",
+    "Your HabTrack access is ready",
     "",
-    "Your payment was confirmed and your HabTrack access is ready.",
+    "Hi,",
     "",
-    `Access link: ${accessUrl}`,
-    includedExtras ? `Included extras: ${includedExtras}` : "",
-    sessionId ? `Order reference: ${sessionId}` : "",
+    "Your payment has been confirmed and your HabTrack access is now active.",
+    "",
+    "Open HabTrack:",
+    accessLabel,
+    "",
+    ...textExtras,
+    "Order reference:",
+    orderReference,
+    "",
+    "You are receiving this email because a payment was confirmed for HabTrack.",
+    "",
+    "Need help? Reply to this email.",
+    "",
+    "HabTrack",
   ].filter(Boolean).join("\n");
 
   const response = await fetch(RESEND_API, {
@@ -259,6 +349,7 @@ async function sendAccessEmail({ env, to, sessionId, orderBumps }) {
     body: JSON.stringify({
       from: env.HABTRACK_FROM_EMAIL,
       to: [to],
+      reply_to: replyTo,
       subject,
       html,
       text,
@@ -278,13 +369,30 @@ async function sendAccessEmail({ env, to, sessionId, orderBumps }) {
   return { ok: false, error };
 }
 
-function formatOrderBumps(value) {
-  if (!value) return "";
+function getOrderBumpNames(value) {
+  if (!value) return [];
   return value
     .split(",")
     .map((id) => ORDER_BUMPS[id]?.[0])
-    .filter(Boolean)
-    .join(", ");
+    .filter(Boolean);
+}
+
+function normalizeAccessUrl(value) {
+  const url = String(value || "").trim();
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
+function formatAccessLabel(value) {
+  return String(value)
+    .replace(/^https?:\/\//i, "")
+    .replace(/\/$/, "");
+}
+
+function extractEmailAddress(value) {
+  const text = String(value || "");
+  const match = text.match(/<([^>]+)>/);
+  return (match ? match[1] : text).trim();
 }
 
 function escapeHtml(value) {
