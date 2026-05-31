@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Checkout | HabTrack</title>
+  <link rel="icon" type="image/png" href="../images/habtrack-icon.png">
+  <link rel="stylesheet" href="checkout.css">
+  <script src="https://js.stripe.com/clover/stripe.js"></script>
+  <script>
+    window.pixelId = "6a172153f57a01e3a3e47ada";
+    var a = document.createElement("script");
+    a.async = true;
+    a.defer = true;
+    a.src = "https://cdn.utmify.com.br/scripts/pixel/pixel.js";
+    document.head.appendChild(a);
+  </script>
+  <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" data-utmify-prevent-xcod-sck data-utmify-prevent-subids async defer></script>
+</head>
+<body>
+  <header class="checkout-header">
+    <div class="checkout-header__inner">
+      <a href="../"><img class="checkout-logo" src="../images/habtrack-logo-header.png" alt="HabTrack"></a>
+      <span class="secure-label">SECURE CHECKOUT</span>
+    </div>
+  </header>
+
+  <main class="checkout-layout">
+    <section class="order-summary">
+      <p class="eyebrow">Build consistency. Track progress.</p>
+      <h1>Complete your HabTrack order</h1>
+      <p class="order-summary__copy">Get instant access to the habit and task tracking system designed to turn your goals into visible progress.</p>
+
+      <article class="product">
+        <img src="../images/habtrack-product-box.png" alt="HabTrack Habit and Task Tracker">
+        <div>
+          <h2>Habit + Task Tracker</h2>
+          <p>Instant digital download with lifetime access. Works with Google Sheets and Excel on any device.</p>
+        </div>
+      </article>
+
+      <div class="price-row">
+        <span>Total due today</span>
+        <strong>$9.90 USD</strong>
+      </div>
+
+      <ul class="trust-list">
+        <li>✓ Instant access after payment</li>
+        <li>✓ 21-day money-back guarantee</li>
+        <li>✓ Secure payment powered by Stripe</li>
+      </ul>
+    </section>
+
+    <section class="payment-panel" aria-label="Payment details">
+      <h2>Payment details</h2>
+      <p class="payment-panel__copy">Your payment information is securely processed by Stripe.</p>
+
+      <label for="email">Email for product access</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+      <div id="email-errors" class="checkout-message" role="alert"></div>
+
+      <div id="payment-element"></div>
+      <div id="confirm-errors" class="checkout-message" role="alert"></div>
+
+      <button id="pay-button" class="pay-button" type="button" disabled>PAY $9.90</button>
+      <p class="payment-panel__footer">By completing your purchase, you agree to our <a href="../policies/terms-of-service/">Terms</a> and <a href="../policies/refund-policy/">Refund Policy</a>.</p>
+    </section>
+  </main>
+  <script src="checkout.js"></script>
+</body>
+</html>

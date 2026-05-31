@@ -10,6 +10,7 @@ mobile-*.png
 .gitignore
 .assetsignore
 wrangler.toml
+worker.js
 images/Video_*.gif
 images/habtrack-first-gallery.png
 images/habtrack-third-gallery.png

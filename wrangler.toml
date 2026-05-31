@@ -1,6 +1,13 @@
 name = "habtrack"
 compatibility_date = "2026-05-27"
+main = "worker.js"
 
 [assets]
 directory = "."
+binding = "ASSETS"
 not_found_handling = "single-page-application"
+run_worker_first = [ "/api/*" ]
+
+[vars]
+STRIPE_PRICE_ID = "price_1TcthPHDyX8ddgVapnXEAqqu"
+STRIPE_PUBLISHABLE_KEY = "pk_test_REPLACE_WITH_YOUR_STRIPE_PUBLISHABLE_KEY"

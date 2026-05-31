@@ -1,5 +1,6 @@
 local-render*.png
 mobile-*.png
 perf-check*.png
+.wrangler-dry-run/
 .DS_Store
 Thumbs.db

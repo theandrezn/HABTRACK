@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order Status | HabTrack</title>
+  <link rel="icon" type="image/png" href="../../images/habtrack-icon.png">
+  <link rel="stylesheet" href="../checkout.css">
+</head>
+<body>
+  <header class="checkout-header">
+    <div class="checkout-header__inner">
+      <a href="../../"><img class="checkout-logo" src="../../images/habtrack-logo-header.png" alt="HabTrack"></a>
+      <span class="secure-label">ORDER STATUS</span>
+    </div>
+  </header>
+  <main class="status-card">
+    <h1 id="status-title">Checking your payment...</h1>
+    <p id="status-copy">Please wait while we confirm your HabTrack order.</p>
+    <a href="../../">Return to HabTrack</a>
+  </main>
+  <script>
+    (async function () {
+      const title = document.querySelector("#status-title");
+      const copy = document.querySelector("#status-copy");
+      const sessionId = new URLSearchParams(window.location.search).get("session_id");
+      if (!sessionId) {
+        title.textContent = "Order not found";
+        copy.textContent = "We could not identify your checkout session. Please contact support if you completed a payment.";
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/checkout-session?session_id=" + encodeURIComponent(sessionId), { cache: "no-store" });
+        const session = await response.json();
+        if (!response.ok) throw new Error(session.error || "Unable to confirm order.");
+
+        if (session.payment_status === "paid") {
+          title.textContent = "Payment confirmed";
+          copy.textContent = "Thank you for your order. Your HabTrack access details will be delivered to " + (session.customer_email || "your email") + ".";
+        } else {
+          title.textContent = "Payment processing";
+          copy.textContent = "Your payment is still being processed. You will receive your HabTrack access details as soon as it is confirmed.";
+        }
+      } catch (error) {
+        title.textContent = "We are checking your order";
+        copy.textContent = "Your checkout was received, but we could not confirm the status yet. Please keep your payment confirmation email.";
+      }
+    })();
+  </script>
+</body>
+</html>

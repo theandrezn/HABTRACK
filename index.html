@@ -3459,7 +3459,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
 <script id="habtrack-buy-now">
   (function () {
-    var CHECKOUT_URL = 'https://buy.stripe.com/test_9B67sL7if6jY2Ot2uj4gg00';
+    var CHECKOUT_URL = '/checkout/';
 
     function updateVisiblePrices() {
       document.querySelectorAll('.main-price, .kaching-bundles__bar-price, .kaching-bundles__bar-price-value').forEach(function (node) {
@@ -3475,7 +3475,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
     function goToCheckout(event) {
       if (event) event.preventDefault();
-      if (CHECKOUT_URL) window.location.href = CHECKOUT_URL;
+      if (CHECKOUT_URL) window.location.href = CHECKOUT_URL + window.location.search;
     }
 
     document.addEventListener('submit', function (event) {
