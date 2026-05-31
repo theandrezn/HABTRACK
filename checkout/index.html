@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Secure Checkout | HabTrack</title>
+  <title>Redirecting to Stripe Checkout | HabTrack</title>
   <link rel="icon" type="image/png" href="../images/habtrack-icon.png">
   <link rel="stylesheet" href="checkout.css">
-  <script src="https://js.stripe.com/clover/stripe.js"></script>
   <script>
     window.pixelId = "6a172153f57a01e3a3e47ada";
     var a = document.createElement("script");
@@ -23,10 +22,7 @@
       <a class="checkout-logo-link" href="../" aria-label="Return to HabTrack">
         <img class="checkout-logo" src="../images/habtrack-logo-header.png" alt="HabTrack">
       </a>
-      <span class="secure-label">
-        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v3H6v10h12V10h-2V7a4 4 0 0 0-4-4Zm-2 7V7a2 2 0 1 1 4 0v3h-4Zm2 3a2 2 0 0 1 1 3.73V18h-2v-1.27A2 2 0 0 1 12 13Z"/></svg>
-        Secure checkout
-      </span>
+      <span class="secure-label">Secure Stripe Checkout</span>
     </div>
   </header>
 
@@ -38,68 +34,38 @@
         </div>
         <div>
           <p class="eyebrow">HabTrack digital system</p>
-          <h1 id="checkout-title">Confirm and pay</h1>
-          <p class="dialog-description">Complete your one-time payment securely.</p>
+          <h1 id="checkout-title">Opening Stripe Checkout</h1>
+          <p id="checkout-message" class="dialog-description">Please wait while we prepare your secure payment page.</p>
         </div>
       </div>
-
-      <div class="product-summary">
-        <img src="../images/habtrack-product-box.png" alt="HabTrack Habit and Task Tracker">
-        <div class="product-summary__content">
-          <strong>Habit + Task Tracker</strong>
-          <span id="order-summary-copy">Instant digital access</span>
-        </div>
-        <div class="product-summary__price">
-          <s>$33.00</s>
-          <strong id="order-total">$9.90</strong>
-        </div>
-      </div>
-
-      <form id="checkout-form" novalidate>
-        <div class="form-field">
-          <label for="email">Email for product access</label>
-          <input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-          <div id="email-errors" class="field-message" role="alert"></div>
-        </div>
-
-        <fieldset class="payment-fieldset">
-          <legend>Payment details</legend>
-          <div id="payment-element" aria-label="Secure payment form"></div>
-        </fieldset>
-
-        <div class="coupon">
-          <button id="coupon-toggle" class="coupon-toggle" type="button" aria-expanded="false" aria-controls="coupon-panel">+ Add coupon</button>
-          <div id="coupon-panel" class="coupon-panel" hidden>
-            <label for="coupon-code">Coupon code</label>
-            <div class="coupon-row">
-              <input id="coupon-code" type="text" autocomplete="off" placeholder="Enter your code">
-              <button id="apply-coupon" class="secondary-button" type="button">Apply</button>
-            </div>
-            <div class="coupon-status">
-              <span id="coupon-message" class="field-message" role="status"></span>
-              <button id="remove-coupon" class="remove-coupon" type="button" hidden>Remove</button>
-            </div>
-          </div>
-        </div>
-
-        <div id="confirm-errors" class="field-message confirm-errors" role="alert"></div>
-        <button id="pay-button" class="pay-button" type="submit" disabled>Pay $9.90</button>
-      </form>
-
-      <ul class="trust-list" aria-label="Purchase benefits">
-        <li>
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9.2 16.2-4-4 1.4-1.4 2.6 2.6 8.2-8.2 1.4 1.4-9.6 9.6Z"/></svg>
-          Instant access after payment
-        </li>
-        <li>
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-3Zm0 2.1L18 7v5c0 3.8-2.3 6.6-6 7.8-3.7-1.2-6-4-6-7.8V7l6-1.9Zm-1 3v5.5l4 2.4 1-1.7-3-1.8V8.1h-2Z"/></svg>
-          21-day money-back guarantee
-        </li>
-      </ul>
-
-      <p class="legal-copy">Payments are processed securely by Stripe. By completing your purchase, you agree to our <a href="../policies/terms-of-service/">Terms</a>, <a href="../policies/privacy-policy/">Privacy Policy</a>, and <a href="../policies/refund-policy/">Refund Policy</a>.</p>
+      <p class="legal-copy">You will be redirected to Stripe's secure hosted checkout page.</p>
     </section>
   </main>
-  <script src="checkout.js"></script>
+
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var bumps = params.get("bumps") ? params.get("bumps").split(",").filter(Boolean) : [];
+      var attribution = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"].reduce(function (values, key) {
+        if (params.get(key)) values[key] = params.get(key);
+        return values;
+      }, {});
+
+      fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bumps: bumps, attribution: attribution })
+      })
+        .then(function (response) { return response.json().then(function (body) { return { ok: response.ok, body: body }; }); })
+        .then(function (result) {
+          if (!result.ok || !result.body.url) throw new Error(result.body.error || "Unable to open Stripe Checkout.");
+          window.location.replace(result.body.url);
+        })
+        .catch(function (error) {
+          document.querySelector("#checkout-title").textContent = "Checkout unavailable";
+          document.querySelector("#checkout-message").textContent = error.message;
+        });
+    })();
+  </script>
 </body>
 </html>

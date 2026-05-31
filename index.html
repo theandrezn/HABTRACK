@@ -3459,7 +3459,6 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
 <script id="habtrack-buy-now">
   (function () {
-    var CHECKOUT_URL = '/checkout/';
     var bumps = [
       ['finance', '💹', 'Ultimate Financial Planning Pack', 'Annual budgeting and monthly control system.', 199],
       ['adhd', '🧠', 'ADHD Productivity Pack', 'Goal planner built for focus, structure, and consistent progress.', 199],
@@ -3491,6 +3490,14 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
     function selectedIds() {
       return bumps.filter(function (bump) { return selected[bump[0]]; }).map(function (bump) { return bump[0]; });
+    }
+
+    function attribution() {
+      var params = new URLSearchParams(window.location.search);
+      return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid'].reduce(function (values, key) {
+        if (params.get(key)) values[key] = params.get(key);
+        return values;
+      }, {});
     }
 
     function renderCart() {
@@ -3538,11 +3545,31 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
         document.body.classList.remove('habtrack-cart-open');
       }
       if (event.target.closest('#habtrack-cart-checkout')) {
-        var query = new URLSearchParams(window.location.search);
-        if (selectedIds().length) query.set('bumps', selectedIds().join(','));
-        window.location.href = CHECKOUT_URL + '?' + query.toString();
+        startStripeCheckout(event.target.closest('#habtrack-cart-checkout'));
       }
     }, true);
+
+    function startStripeCheckout(button) {
+      if (!button || button.disabled) return;
+      var originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'OPENING STRIPE...';
+      fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attribution: attribution(), bumps: selectedIds() })
+      })
+        .then(function (response) { return response.json().then(function (body) { return { ok: response.ok, body: body }; }); })
+        .then(function (result) {
+          if (!result.ok || !result.body.url) throw new Error(result.body.error || 'Unable to open Stripe Checkout.');
+          window.location.href = result.body.url;
+        })
+        .catch(function (error) {
+          button.disabled = false;
+          button.textContent = originalText;
+          window.alert(error.message);
+        });
+    }
 
     document.addEventListener('DOMContentLoaded', function () {
       updateVisiblePrices();

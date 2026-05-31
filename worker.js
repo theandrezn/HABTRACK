@@ -28,6 +28,10 @@ export default {
       return getCheckoutSession(url, env);
     }
 
+    if (url.pathname === "/checkout/checkout.js") {
+      return new Response("Not found", { status: 404 });
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
@@ -46,9 +50,10 @@ async function createCheckoutSession(request, env) {
   const origin = new URL(request.url).origin;
   const form = new URLSearchParams();
   form.set("mode", "payment");
-  form.set("ui_mode", "custom");
+  form.set("locale", "en");
   form.set("allow_promotion_codes", "true");
-  form.set("return_url", `${origin}/checkout/success/?session_id={CHECKOUT_SESSION_ID}`);
+  form.set("success_url", `${origin}/checkout/success/?session_id={CHECKOUT_SESSION_ID}`);
+  form.set("cancel_url", `${origin}/`);
   form.set("line_items[0][price_data][currency]", "usd");
   form.set("line_items[0][price_data][unit_amount]", "990");
   form.set("line_items[0][price_data][product_data][name]", "HabTrack - Habit + Task Tracker");
@@ -65,7 +70,7 @@ async function createCheckoutSession(request, env) {
     form.set(`line_items[${index}][quantity]`, "1");
   });
   form.set("metadata[product]", "habtrack-habit-task-system");
-  form.set("metadata[source]", "habtrack-custom-checkout");
+  form.set("metadata[source]", "habtrack-hosted-checkout");
   form.set("metadata[order_bumps]", selectedBumps.join(","));
 
   const attribution = cleanAttribution(body.attribution);
@@ -80,7 +85,7 @@ async function createCheckoutSession(request, env) {
 
   if (!response.ok) return stripeError(response);
   const session = await response.json();
-  return json({ client_secret: session.client_secret });
+  return json({ id: session.id, url: session.url });
 }
 
 async function getCheckoutSession(url, env) {
