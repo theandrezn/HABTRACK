@@ -10,6 +10,8 @@
   const couponMessage = document.querySelector("#coupon-message");
   const applyCoupon = document.querySelector("#apply-coupon");
   const removeCoupon = document.querySelector("#remove-coupon");
+  const orderTotal = document.querySelector("#order-total");
+  const orderSummaryCopy = document.querySelector("#order-summary-copy");
 
   function setMessage(element, message, success) {
     element.textContent = message || "";
@@ -24,6 +26,20 @@
         return values;
       }, {});
   }
+
+  function selectedBumps() {
+    const value = new URLSearchParams(window.location.search).get("bumps");
+    return value ? value.split(",").filter(Boolean) : [];
+  }
+
+  function paymentLabel() {
+    return "Pay $" + ((990 + selectedBumps().length * 199) / 100).toFixed(2);
+  }
+
+  const bumpCount = selectedBumps().length;
+  orderTotal.textContent = "$" + ((990 + bumpCount * 199) / 100).toFixed(2);
+  orderSummaryCopy.textContent = bumpCount ? "Instant digital access + " + bumpCount + " selected extras" : "Instant digital access";
+  payButton.textContent = paymentLabel();
 
   couponToggle.addEventListener("click", () => {
     const expanded = couponToggle.getAttribute("aria-expanded") === "true";
@@ -42,7 +58,7 @@
     const clientSecret = fetch("/api/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ attribution: attribution() }),
+      body: JSON.stringify({ attribution: attribution(), bumps: selectedBumps() }),
     })
       .then(async (response) => {
         const body = await response.json();
@@ -140,7 +156,7 @@
       const emailResult = await actions.updateEmail(emailInput.value.trim());
       if (emailResult.error) {
         setMessage(emailErrors, emailResult.error.message);
-        payButton.textContent = "Pay $9.90";
+        payButton.textContent = paymentLabel();
         payButton.disabled = false;
         return;
       }
@@ -148,7 +164,7 @@
       const result = await actions.confirm();
       if (result.type === "error") {
         setMessage(confirmErrors, result.error.message);
-        payButton.textContent = "Pay $9.90";
+        payButton.textContent = paymentLabel();
         payButton.disabled = false;
       }
     });

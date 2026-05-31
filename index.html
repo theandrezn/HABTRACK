@@ -1813,7 +1813,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
             <span class="main-atc__error" style="display:none;"></span>
             <span class="main-atc__label button__label">
               
-              <span class="main-atc__label__text">BUY NOW</span>
+              <span class="main-atc__label__text">ADD TO CART</span>
             </span>
             <div class="loading-overlay__spinner hidden">
               <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
@@ -3460,6 +3460,18 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 <script id="habtrack-buy-now">
   (function () {
     var CHECKOUT_URL = '/checkout/';
+    var bumps = [
+      ['finance', '💹', 'Ultimate Financial Planning Pack', 'Annual budgeting and monthly control system.', 199],
+      ['adhd', '🧠', 'ADHD Productivity Pack', 'Goal planner built for focus, structure, and consistent progress.', 199],
+      ['savings', '🐷', '52-Week Savings System', 'A weekly savings challenge to build your reserve consistently.', 199],
+      ['clarity', '💡', 'Clear Mind Guide (PDF)', 'A practical mental declutter system for a clearer routine.', 199],
+      ['fitness', '⚖️', 'Weight Management Planner', 'Track your progress with a complete meal and weight planner.', 199],
+      ['wallpapers', '🖼️', '100 Motivational Wallpapers', 'More than 100 wallpapers to keep your goals visible every day.', 199],
+      ['updates', '✓', 'Lifetime Updates', 'Receive future improvements to the HabTrack system.', 199]
+    ];
+    var selected = {};
+
+    bumps.forEach(function (bump) { selected[bump[0]] = true; });
 
     function updateVisiblePrices() {
       document.querySelectorAll('.main-price, .kaching-bundles__bar-price, .kaching-bundles__bar-price-value').forEach(function (node) {
@@ -3473,26 +3485,124 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
       });
     }
 
-    function goToCheckout(event) {
+    function formatMoney(cents) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+
+    function selectedIds() {
+      return bumps.filter(function (bump) { return selected[bump[0]]; }).map(function (bump) { return bump[0]; });
+    }
+
+    function renderCart() {
+      var list = document.querySelector('#habtrack-cart-items');
+      var subtotal = 990;
+      if (!list) return;
+      list.innerHTML = '';
+      bumps.forEach(function (bump) {
+        if (selected[bump[0]]) subtotal += bump[4];
+        var item = document.createElement('label');
+        item.className = 'habtrack-cart-item';
+        item.innerHTML = '<span class="habtrack-cart-item__icon">' + bump[1] + '</span>' +
+          '<span class="habtrack-cart-item__copy"><strong>' + bump[2] + '</strong><small>' + bump[3] + '</small></span>' +
+          '<span class="habtrack-cart-item__price">' + formatMoney(bump[4]) + '</span>' +
+          '<input type="checkbox" data-bump="' + bump[0] + '"' + (selected[bump[0]] ? ' checked' : '') + '>' +
+          '<span class="habtrack-switch" aria-hidden="true"></span>';
+        item.querySelector('input').addEventListener('change', function (event) {
+          event.stopImmediatePropagation();
+          selected[bump[0]] = event.target.checked;
+          renderCart();
+        });
+        list.appendChild(item);
+      });
+      document.querySelector('#habtrack-cart-count').textContent = String(1 + selectedIds().length);
+      document.querySelector('#habtrack-cart-subtotal').textContent = formatMoney(subtotal);
+    }
+
+    function openCart(event) {
       if (event) event.preventDefault();
-      if (CHECKOUT_URL) window.location.href = CHECKOUT_URL + window.location.search;
+      renderCart();
+      document.querySelector('#habtrack-cart').classList.add('is-open');
+      document.querySelector('#habtrack-cart').setAttribute('aria-hidden', 'false');
+      document.body.classList.add('habtrack-cart-open');
     }
 
     document.addEventListener('submit', function (event) {
-      if (event.target && event.target.id === 'product-form-template--18647385702498__main') goToCheckout(event);
+      if (event.target && event.target.id === 'product-form-template--18647385702498__main') openCart(event);
     }, true);
 
     document.addEventListener('click', function (event) {
-      if (event.target.closest('#ProductSubmitButton-template--18647385702498__main, .main-product-atc')) goToCheckout(event);
+      if (event.target.closest('#ProductSubmitButton-template--18647385702498__main, .main-product-atc')) openCart(event);
+      if (event.target.closest('[data-close-habtrack-cart]')) {
+        document.querySelector('#habtrack-cart').classList.remove('is-open');
+        document.querySelector('#habtrack-cart').setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('habtrack-cart-open');
+      }
+      if (event.target.closest('#habtrack-cart-checkout')) {
+        var query = new URLSearchParams(window.location.search);
+        if (selectedIds().length) query.set('bumps', selectedIds().join(','));
+        window.location.href = CHECKOUT_URL + '?' + query.toString();
+      }
     }, true);
 
     document.addEventListener('DOMContentLoaded', function () {
       updateVisiblePrices();
+      renderCart();
       window.setInterval(updateVisiblePrices, 700);
     });
   })();
 </script>
-  <style>  </style>
+<aside id="habtrack-cart" class="habtrack-cart" aria-hidden="true" aria-labelledby="habtrack-cart-title">
+  <button class="habtrack-cart__overlay" type="button" data-close-habtrack-cart aria-label="Close cart"></button>
+  <div class="habtrack-cart__panel">
+    <header class="habtrack-cart__header">
+      <h2 id="habtrack-cart-title">Cart · <span id="habtrack-cart-count">8</span> items</h2>
+      <button class="habtrack-cart__close" type="button" data-close-habtrack-cart aria-label="Close cart">×</button>
+    </header>
+    <div id="habtrack-cart-items" class="habtrack-cart__items"></div>
+    <footer class="habtrack-cart__footer">
+      <div class="habtrack-cart__saving"><span>Savings</span><strong>-$179.97</strong></div>
+      <div class="habtrack-cart__subtotal"><span>Subtotal</span><strong id="habtrack-cart-subtotal">$23.83</strong></div>
+      <div class="habtrack-cart__trust"><span>🔒 Secure checkout</span><span>⚡ Instant delivery</span><span>✅ 21-day guarantee</span></div>
+      <button id="habtrack-cart-checkout" class="habtrack-cart__checkout" type="button">CHECKOUT</button>
+    </footer>
+  </div>
+</aside>
+<style>
+  body.habtrack-cart-open { overflow: hidden; }
+  .habtrack-cart { position: fixed; inset: 0; z-index: 99999; pointer-events: none; }
+  .habtrack-cart.is-open { pointer-events: auto; }
+  .habtrack-cart__overlay { position: absolute; inset: 0; border: 0; background: rgba(0,0,0,.55); opacity: 0; transition: opacity .2s ease; }
+  .habtrack-cart.is-open .habtrack-cart__overlay { opacity: 1; }
+  .habtrack-cart__panel { position: absolute; top: 0; right: 0; width: min(440px, 100vw); height: 100%; display: flex; flex-direction: column; background: #0d0d10; color: #fff; border-left: 1px solid #383a40; transform: translateX(100%); transition: transform .26s ease; font-family: Poppins, Arial, sans-serif; }
+  .habtrack-cart.is-open .habtrack-cart__panel { transform: translateX(0); }
+  .habtrack-cart__header { display: flex; align-items: center; justify-content: space-between; padding: 22px 18px 14px; border-bottom: 1px solid #272930; }
+  .habtrack-cart__header h2 { margin: 0; color: #fff; font-size: 27px; letter-spacing: 0; }
+  .habtrack-cart__close { border: 0; background: transparent; color: #fff; font-size: 40px; line-height: 1; cursor: pointer; }
+  .habtrack-cart__items { overflow-y: auto; padding: 14px 14px 4px; }
+  .habtrack-cart-item { display: grid; grid-template-columns: 46px 1fr auto 42px; gap: 8px; align-items: center; padding: 9px 0; cursor: pointer; }
+  .habtrack-cart-item__icon { display: grid; place-items: center; width: 42px; height: 42px; font-size: 30px; }
+  .habtrack-cart-item__copy strong, .habtrack-cart-item__copy small { display: block; }
+  .habtrack-cart-item__copy strong { font-size: 14px; line-height: 1.1; }
+  .habtrack-cart-item__copy small { margin-top: 4px; color: #ddd; font-size: 12px; line-height: 1.22; }
+  .habtrack-cart-item__price { color: #00a3ff; font-size: 15px; font-weight: 700; }
+  .habtrack-cart-item input { position: absolute; opacity: 0; pointer-events: none; }
+  .habtrack-switch { position: relative; width: 39px; height: 21px; border-radius: 12px; background: #484b53; transition: background .15s ease; }
+  .habtrack-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 15px; height: 15px; border-radius: 50%; background: #08090b; transition: transform .15s ease; }
+  .habtrack-cart-item input:checked + .habtrack-switch { background: #00a3ff; }
+  .habtrack-cart-item input:checked + .habtrack-switch::after { transform: translateX(18px); }
+  .habtrack-cart__footer { padding: 10px 16px 16px; border-top: 1px solid #272930; background: #0d0d10; }
+  .habtrack-cart__saving, .habtrack-cart__subtotal { display: flex; justify-content: space-between; font-size: 19px; font-weight: 700; }
+  .habtrack-cart__saving { color: #00a3ff; }
+  .habtrack-cart__subtotal { margin-top: 5px; color: #fff; font-size: 24px; }
+  .habtrack-cart__trust { display: flex; gap: 10px; justify-content: space-between; margin: 14px 0; color: #fff; font-size: 12px; line-height: 1.15; }
+  .habtrack-cart__checkout { width: 100%; min-height: 50px; border: 0; border-radius: 6px; background: #00a3ff; color: #fff; font: inherit; font-size: 18px; font-weight: 800; cursor: pointer; }
+  @media (max-width: 480px) {
+    .habtrack-cart__header h2 { font-size: 24px; }
+    .habtrack-cart-item { grid-template-columns: 42px 1fr auto 40px; gap: 6px; }
+    .habtrack-cart-item__copy strong { font-size: 13px; }
+    .habtrack-cart-item__copy small { font-size: 11px; }
+  }
+</style>
 
 
 <script id="habtrack-scroll-motion">
@@ -3548,6 +3658,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
     document.querySelectorAll('h1, h2, .rich-text__heading').forEach(function (el) {
       if (mainProduct && mainProduct.contains(el)) return;
+      if (el.closest('#habtrack-cart')) return;
       splitLetters(el);
       el.classList.add('habtrack-reveal');
     });

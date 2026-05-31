@@ -1,5 +1,14 @@
 const STRIPE_API = "https://api.stripe.com/v1";
 const STRIPE_VERSION = "2026-02-25.clover";
+const ORDER_BUMPS = {
+  finance: ["Ultimate Financial Planning Pack", "Annual budgeting and monthly control system.", 199],
+  adhd: ["ADHD Productivity Pack", "Goal planner built for focus, structure, and consistent progress.", 199],
+  savings: ["52-Week Savings System", "A weekly savings challenge to build your reserve consistently.", 199],
+  clarity: ["Clear Mind Guide (PDF)", "A practical mental declutter system for a clearer routine.", 199],
+  fitness: ["Weight Management Planner", "Track your progress with a complete meal and weight planner.", 199],
+  wallpapers: ["100 Motivational Wallpapers", "More than 100 wallpapers to keep your goals visible every day.", 199],
+  updates: ["Lifetime Updates", "Receive future improvements to the HabTrack system.", 199],
+};
 
 export default {
   async fetch(request, env) {
@@ -45,8 +54,19 @@ async function createCheckoutSession(request, env) {
   form.set("line_items[0][price_data][product_data][name]", "HabTrack - Habit + Task Tracker");
   form.set("line_items[0][price_data][product_data][description]", "Instant digital download with lifetime access.");
   form.set("line_items[0][quantity]", "1");
+  const selectedBumps = cleanOrderBumps(body.bumps);
+  selectedBumps.forEach((id, offset) => {
+    const [name, description, amount] = ORDER_BUMPS[id];
+    const index = offset + 1;
+    form.set(`line_items[${index}][price_data][currency]`, "usd");
+    form.set(`line_items[${index}][price_data][unit_amount]`, String(amount));
+    form.set(`line_items[${index}][price_data][product_data][name]`, name);
+    form.set(`line_items[${index}][price_data][product_data][description]`, description);
+    form.set(`line_items[${index}][quantity]`, "1");
+  });
   form.set("metadata[product]", "habtrack-habit-task-system");
   form.set("metadata[source]", "habtrack-custom-checkout");
+  form.set("metadata[order_bumps]", selectedBumps.join(","));
 
   const attribution = cleanAttribution(body.attribution);
   Object.entries(attribution).forEach(([key, value]) => {
@@ -101,6 +121,11 @@ function cleanAttribution(value) {
     }
     return metadata;
   }, {});
+}
+
+function cleanOrderBumps(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((id) => typeof id === "string" && ORDER_BUMPS[id]))];
 }
 
 async function stripeRequest(path, env, init = {}) {
