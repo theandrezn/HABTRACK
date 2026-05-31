@@ -227,7 +227,8 @@ function safeEqual(left, right) {
 async function sendAccessEmail({ env, to, sessionId, orderBumps }) {
   const accessUrl = env.HABTRACK_ACCESS_URL;
   const subject = "Your HabTrack access is ready";
-  const bumpLine = orderBumps ? `<p><strong>Included extras:</strong> ${escapeHtml(orderBumps)}</p>` : "";
+  const includedExtras = formatOrderBumps(orderBumps);
+  const bumpLine = includedExtras ? `<p><strong>Included extras:</strong> ${escapeHtml(includedExtras)}</p>` : "";
   const html = `
     <div style="font-family:Arial,sans-serif;line-height:1.55;color:#111827">
       <h1 style="margin:0 0 16px">Welcome to HabTrack</h1>
@@ -244,7 +245,7 @@ async function sendAccessEmail({ env, to, sessionId, orderBumps }) {
     "Your payment was confirmed and your HabTrack access is ready.",
     "",
     `Access link: ${accessUrl}`,
-    orderBumps ? `Included extras: ${orderBumps}` : "",
+    includedExtras ? `Included extras: ${includedExtras}` : "",
     sessionId ? `Order reference: ${sessionId}` : "",
   ].filter(Boolean).join("\n");
 
@@ -275,6 +276,15 @@ async function sendAccessEmail({ env, to, sessionId, orderBumps }) {
     // Keep fallback.
   }
   return { ok: false, error };
+}
+
+function formatOrderBumps(value) {
+  if (!value) return "";
+  return value
+    .split(",")
+    .map((id) => ORDER_BUMPS[id]?.[0])
+    .filter(Boolean)
+    .join(", ");
 }
 
 function escapeHtml(value) {

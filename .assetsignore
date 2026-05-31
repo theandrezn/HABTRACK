@@ -10,6 +10,8 @@ local-render*.png
 mobile-*.png
 cart-*-preview.png
 *.log
+scripts
+scripts/**
 .gitignore
 .assetsignore
 wrangler.toml
