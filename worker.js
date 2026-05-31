@@ -2,13 +2,13 @@ const STRIPE_API = "https://api.stripe.com/v1";
 const STRIPE_VERSION = "2026-02-25.clover";
 const RESEND_API = "https://api.resend.com/emails";
 const ORDER_BUMPS = {
-  finance: ["Ultimate Money Planner Pack", "All-in-one money system: annual budget and monthly tracker.", 199, "images/order-bumps/checkout-icons/budget-planner.jpg"],
-  adhd: ["ADHD Productivity Pack", "ADHD goal planner built for focus, structure, and consistent wins.", 199, "images/order-bumps/checkout-icons/focus-planner.jpg"],
-  savings: ["52-Week Saving System", "Weekly savings challenge and planner for consistent saving.", 199, "images/order-bumps/checkout-icons/goal-planner.jpg"],
-  clarity: ["Clear Mind PDF", "Brain dump system to capture, sort, and clear mental clutter fast.", 199, "images/order-bumps/checkout-icons/self-care-planner.jpg"],
-  fitness: ["Weight-Loss Planner Bundle", "Hit your goal weight with a proven tracker and meal planner combo.", 199, "images/order-bumps/checkout-icons/workout-planner.jpg"],
-  wallpapers: ["100-Pack Motivational Quote Phone Wallpaper", "100+ wallpapers that rewire your phone into a focus tool.", 199, "images/order-bumps/checkout-icons/meal-planner.jpg"],
-  updates: ["Lifetime Updates", "Receive future improvements to the HabTrack system.", 199, "images/order-bumps/checkout-icons/travel-planner.jpg"],
+  finance: ["Ultimate Money Planner Pack", "All-in-one money system: annual budget and monthly tracker.", 199, "images/financial-profit.png"],
+  adhd: ["ADHD Productivity Pack", "ADHD goal planner built for focus, structure, and consistent wins.", 199, "images/adhd.png"],
+  savings: ["52-Week Saving System", "Weekly savings challenge and planner for consistent saving.", 199, "images/Gemini_Generated_Image_mvlz05mvlz05mvlz-Edited.png"],
+  clarity: ["Clear Mind PDF", "Brain dump system to capture, sort, and clear mental clutter fast.", 199, "images/think_6fc2c6f0-f133-40ff-a8cd-4e5c14a19386.png"],
+  fitness: ["Weight-Loss Planner Bundle", "Hit your goal weight with a proven tracker and meal planner combo.", 199, "images/weight-loss.png"],
+  wallpapers: ["100-Pack Motivational Quote Phone Wallpaper", "100+ wallpapers that rewire your phone into a focus tool.", 199, "images/photo_1.png"],
+  updates: ["Lifetime Updates", "Receive future improvements to the HabTrack system.", 199, "images/updated_ffb31b52-f3b9-4ba7-aade-f77e3dfab0f9.png"],
 };
 
 export default {
