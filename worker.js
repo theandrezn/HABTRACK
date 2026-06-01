@@ -64,7 +64,7 @@ async function createCheckoutSession(request, env) {
   form.set("mode", "payment");
   form.set("locale", "en");
   form.set("allow_promotion_codes", "true");
-  form.set("success_url", "https://thanyouhabtrack.andrrluis86.workers.dev/?session_id={CHECKOUT_SESSION_ID}");
+  form.set("success_url", "https://thanyouhabtrack.pages.dev/?session_id={CHECKOUT_SESSION_ID}");
   form.set("cancel_url", `${origin}/`);
   form.set("line_items[0][price_data][currency]", "usd");
   form.set("line_items[0][price_data][unit_amount]", "990");
