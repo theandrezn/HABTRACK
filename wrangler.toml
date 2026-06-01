@@ -4,6 +4,8 @@ main = "worker.js"
 workers_dev = true
 
 routes = [
+  { pattern = "habtrack.shop", zone_name = "habtrack.shop", custom_domain = true },
+  { pattern = "www.habtrack.shop", zone_name = "habtrack.shop", custom_domain = true },
   { pattern = "thankyou.habtrack.shop", zone_name = "habtrack.shop", custom_domain = true }
 ]
 
