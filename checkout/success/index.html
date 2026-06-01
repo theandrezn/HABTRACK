@@ -6,6 +6,18 @@
   <title>Order Status | HabTrack</title>
   <link rel="icon" type="image/png" href="../../images/habtrack-icon.png">
   <link rel="stylesheet" href="../checkout.css">
+  <script>
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)
+    }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '27284228041269455');
+    fbq('track', 'PageView');
+  </script>
 </head>
 <body>
   <header class="checkout-header">
@@ -38,6 +50,16 @@
         if (session.payment_status === "paid") {
           title.textContent = "Payment confirmed";
           copy.textContent = "Thank you for your order. Your HabTrack access details will be delivered to " + (session.customer_email || "your email") + ".";
+          if (window.fbq && !sessionStorage.getItem("habtrack_purchase_" + sessionId)) {
+            sessionStorage.setItem("habtrack_purchase_" + sessionId, "1");
+            fbq("track", "Purchase", {
+              value: Number(session.amount_total || 0) / 100,
+              currency: session.currency || "USD",
+              content_name: "HabTrack - Habit + Task Tracker",
+              content_ids: ["habtrack-habit-task-system"],
+              num_items: Number(session.item_count || 1)
+            }, { eventID: sessionId });
+          }
         } else {
           title.textContent = "Payment processing";
           copy.textContent = "Your payment is still being processed. You will receive your HabTrack access details as soon as it is confirmed.";

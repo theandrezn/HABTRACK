@@ -79,6 +79,12 @@ async function createCheckoutSession(request, env) {
   form.set("metadata[product]", "habtrack-habit-task-system");
   form.set("metadata[source]", "habtrack-hosted-checkout");
   form.set("metadata[order_bumps]", selectedBumps.join(","));
+  if (typeof body.event_id === "string" && body.event_id.trim()) {
+    form.set("metadata[event_id]", body.event_id.trim().slice(0, 120));
+  }
+  form.set("metadata[event_source_url]", origin);
+  form.set("metadata[client_ip]", request.headers.get("CF-Connecting-IP") || "");
+  form.set("metadata[client_user_agent]", (request.headers.get("User-Agent") || "").slice(0, 450));
 
   const attribution = cleanAttribution(body.attribution);
   Object.entries(attribution).forEach(([key, value]) => {
@@ -125,7 +131,9 @@ async function handleStripeWebhook(request, env) {
   });
   if (!emailResult.ok) return json({ error: emailResult.error }, 502);
 
-  return json({ received: true, email_sent: true });
+  const metaResult = await sendMetaPurchaseEvent({ env, session, email });
+
+  return json({ received: true, email_sent: true, meta_sent: metaResult.sent, meta_error: metaResult.error || undefined });
 }
 
 async function getCheckoutSession(url, env) {
@@ -146,7 +154,57 @@ async function getCheckoutSession(url, env) {
     status: session.status,
     payment_status: session.payment_status,
     customer_email: session.customer_details?.email || session.customer_email || "",
+    amount_total: session.amount_total || 0,
+    currency: String(session.currency || "usd").toUpperCase(),
+    item_count: 1 + cleanOrderBumps((session.metadata?.order_bumps || "").split(",")).length,
   });
+}
+
+async function sendMetaPurchaseEvent({ env, session, email }) {
+  if (!env.META_CAPI_TOKEN) return { sent: false };
+
+  const metadata = session.metadata || {};
+  const userData = cleanObject({
+    em: email ? [await sha256Hex(String(email).trim().toLowerCase())] : undefined,
+    fbp: metadata.fbp,
+    fbc: metadata.fbc,
+    client_ip_address: metadata.client_ip,
+    client_user_agent: metadata.client_user_agent,
+  });
+  const orderBumps = cleanOrderBumps((metadata.order_bumps || "").split(","));
+  const contentIds = ["habtrack-habit-task-system", ...orderBumps];
+  const payload = {
+    data: [{
+      event_name: "Purchase",
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: session.id,
+      action_source: "website",
+      event_source_url: metadata.event_source_url || "https://habtrack.shop",
+      user_data: userData,
+      custom_data: {
+        currency: String(session.currency || "usd").toUpperCase(),
+        value: Number(session.amount_total || 0) / 100,
+        order_id: session.id,
+        content_name: "HabTrack - Habit + Task Tracker",
+        content_ids: contentIds,
+        contents: contentIds.map((id) => ({ id, quantity: 1 })),
+        num_items: contentIds.length,
+      },
+    }],
+  };
+
+  try {
+    const response = await fetch(`https://graph.facebook.com/v20.0/27284228041269455/events?access_token=${env.META_CAPI_TOKEN}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (response.ok) return { sent: true };
+    const body = await response.text();
+    return { sent: false, error: body.slice(0, 300) };
+  } catch (error) {
+    return { sent: false, error: error.message || "Meta CAPI request failed." };
+  }
 }
 
 function requiredStripeConfig(env) {
@@ -167,7 +225,7 @@ function requiredEmailConfig(env) {
 
 function cleanAttribution(value) {
   if (!value || typeof value !== "object") return {};
-  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid"];
+  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid", "fbp", "fbc"];
   return allowed.reduce((metadata, key) => {
     if (typeof value[key] === "string" && value[key].trim()) {
       metadata[key] = value[key].trim().slice(0, 450);
@@ -216,6 +274,19 @@ async function hmacSha256Hex(secret, message) {
   );
   const bytes = new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(message)));
   return [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+async function sha256Hex(message) {
+  const encoder = new TextEncoder();
+  const bytes = new Uint8Array(await crypto.subtle.digest("SHA-256", encoder.encode(message)));
+  return [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function cleanObject(value) {
+  return Object.fromEntries(Object.entries(value).filter(([, item]) => {
+    if (Array.isArray(item)) return item.length > 0 && item.every(Boolean);
+    return Boolean(item);
+  }));
 }
 
 function safeEqual(left, right) {

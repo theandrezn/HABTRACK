@@ -961,6 +961,19 @@ Shopify.SignInWithShop.User.recognized = false;</script>
       async
       defer
     ></script>
+    <script id="habtrack-meta-pixel">
+      !function(f,b,e,v,n,t,s){
+        if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)
+      }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '27284228041269455');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=27284228041269455&ev=PageView&noscript=1"></noscript>
 
 <style id="habtrack-performance-motion">
   html { scroll-behavior: smooth; }
@@ -3496,10 +3509,33 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
     function attribution() {
       var params = new URLSearchParams(window.location.search);
-      return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid'].reduce(function (values, key) {
+      var values = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid'].reduce(function (values, key) {
         if (params.get(key)) values[key] = params.get(key);
         return values;
       }, {});
+      var fbp = getCookie('_fbp');
+      var fbc = getCookie('_fbc') || buildFbc(params.get('fbclid'));
+      if (fbp) values.fbp = fbp;
+      if (fbc) values.fbc = fbc;
+      return values;
+    }
+
+    function getCookie(name) {
+      return document.cookie.split('; ').reduce(function (found, part) {
+        if (found) return found;
+        var index = part.indexOf('=');
+        var key = index === -1 ? part : part.slice(0, index);
+        return key === name ? decodeURIComponent(part.slice(index + 1)) : '';
+      }, '');
+    }
+
+    function buildFbc(fbclid) {
+      if (!fbclid) return '';
+      return 'fb.1.' + Date.now() + '.' + fbclid;
+    }
+
+    function trackingEventId(prefix) {
+      return prefix + '_' + Date.now() + '_' + Math.random().toString(36).slice(2);
     }
 
     function renderCart() {
@@ -3562,12 +3598,25 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
     function startStripeCheckout(button) {
       if (!button || button.disabled) return;
       var originalText = button.textContent;
+      var checkoutEventId = trackingEventId('initiate_checkout');
+      var selectedBumps = selectedIds();
+      var checkoutAttribution = attribution();
+      if (window.fbq) {
+        fbq('track', 'InitiateCheckout', {
+          value: 9.90 + (selectedBumps.length * 1.99),
+          currency: 'USD',
+          content_name: 'HabTrack - Habit + Task Tracker',
+          content_ids: ['habtrack-habit-task-system'].concat(selectedBumps),
+          contents: [{ id: 'habtrack-habit-task-system', quantity: 1 }],
+          num_items: 1 + selectedBumps.length
+        }, { eventID: checkoutEventId });
+      }
       button.disabled = true;
       button.textContent = 'OPENING STRIPE...';
       fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ attribution: attribution(), bumps: selectedIds() })
+        body: JSON.stringify({ attribution: checkoutAttribution, bumps: selectedBumps, event_id: checkoutEventId })
       })
         .then(function (response) { return response.json().then(function (body) { return { ok: response.ok, body: body }; }); })
         .then(function (result) {
