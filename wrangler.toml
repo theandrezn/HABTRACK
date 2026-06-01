@@ -17,3 +17,6 @@ run_worker_first = [ "/", "/index.html", "/api/*", "/checkout/checkout.js" ]
 
 [vars]
 STRIPE_PUBLISHABLE_KEY = "pk_live_51TctSYHWIgUdUt81WJpIZZk0WFQP4ZA6tlL7yIsIZFy2xeCkxwRIuSrKJqexZDH5UpepQGLLQuX8qKND44WSydjX00RA2fy9pC"
+HABTRACK_ACCESS_URL = "https://app.habtrack.shop"
+HABTRACK_FROM_EMAIL = "HabTrack <access@habtrack.shop>"
+HABTRACK_REPLY_TO = "support@habtrack.shop"
