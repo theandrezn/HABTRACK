@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Order Status | HabTrack</title>
+  <title>Thank You | HabTrack</title>
   <link rel="icon" type="image/png" href="../../images/habtrack-icon.png">
   <link rel="stylesheet" href="../checkout.css">
   <script>
@@ -23,12 +23,12 @@
   <header class="checkout-header">
     <div class="checkout-header__inner">
       <a href="../../"><img class="checkout-logo" src="../../images/habtrack-logo-header.png" alt="HabTrack"></a>
-      <span class="secure-label">ORDER STATUS</span>
+      <span class="secure-label">THANK YOU</span>
     </div>
   </header>
   <main class="status-card">
-    <h1 id="status-title">Checking your payment...</h1>
-    <p id="status-copy">Please wait while we confirm your HabTrack order.</p>
+    <h1 id="status-title">Confirming your HabTrack order...</h1>
+    <p id="status-copy">Please wait while we confirm your payment and prepare your access details.</p>
     <a href="../../">Return to HabTrack</a>
   </main>
   <script>
@@ -48,8 +48,8 @@
         if (!response.ok) throw new Error(session.error || "Unable to confirm order.");
 
         if (session.payment_status === "paid") {
-          title.textContent = "Payment confirmed";
-          copy.textContent = "Thank you for your order. Your HabTrack access details will be delivered to " + (session.customer_email || "your email") + ".";
+          title.textContent = "Thank you for your order";
+          copy.textContent = "Your payment was confirmed. HabTrack access details will be delivered to " + (session.customer_email || "your email") + ".";
           if (window.fbq && !sessionStorage.getItem("habtrack_purchase_" + sessionId)) {
             sessionStorage.setItem("habtrack_purchase_" + sessionId, "1");
             fbq("track", "Purchase", {

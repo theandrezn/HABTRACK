@@ -14,6 +14,7 @@ const ORDER_BUMPS = {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const isThankYouHost = url.hostname === "thankyou.habtrack.shop";
 
     if (url.pathname === "/api/stripe-config" && request.method === "GET") {
       return json({
@@ -37,6 +38,12 @@ export default {
       return new Response("Not found", { status: 404 });
     }
 
+    if (isThankYouHost && (url.pathname === "/" || url.pathname === "/index.html")) {
+      const successUrl = new URL(request.url);
+      successUrl.pathname = "/checkout/success/";
+      return env.ASSETS.fetch(new Request(successUrl, request));
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
@@ -57,7 +64,7 @@ async function createCheckoutSession(request, env) {
   form.set("mode", "payment");
   form.set("locale", "en");
   form.set("allow_promotion_codes", "true");
-  form.set("success_url", `${origin}/checkout/success/?session_id={CHECKOUT_SESSION_ID}`);
+  form.set("success_url", "https://thankyou.habtrack.shop/?session_id={CHECKOUT_SESSION_ID}");
   form.set("cancel_url", `${origin}/`);
   form.set("line_items[0][price_data][currency]", "usd");
   form.set("line_items[0][price_data][unit_amount]", "990");
