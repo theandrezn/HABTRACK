@@ -105,6 +105,17 @@ async function createCheckoutSession(request, env) {
 
   if (!response.ok) return stripeError(response);
   const session = await response.json();
+  const metaResult = await sendMetaInitiateCheckoutEvent({
+    env,
+    eventId: body.event_id,
+    attribution,
+    amountTotal: 990 + selectedBumps.length * 199,
+    orderBumps: selectedBumps,
+    request,
+  });
+  if (metaResult.error) {
+    console.warn("Meta InitiateCheckout error:", metaResult.error);
+  }
   return json({ id: session.id, url: session.url });
 }
 
@@ -214,6 +225,49 @@ async function sendMetaPurchaseEvent({ env, session, email }) {
   }
 }
 
+async function sendMetaInitiateCheckoutEvent({ env, eventId, attribution, amountTotal, orderBumps, request }) {
+  if (!env.META_CAPI_TOKEN || !eventId) return { sent: false };
+
+  const metadata = attribution || {};
+  const contentIds = ["habtrack-habit-task-system", ...orderBumps];
+  const payload = {
+    data: [{
+      event_name: "InitiateCheckout",
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: String(eventId).slice(0, 120),
+      action_source: "website",
+      event_source_url: metadata.source_url || metadata.event_source_url || "https://habtrack.shop",
+      user_data: cleanObject({
+        fbp: metadata.fbp,
+        fbc: metadata.fbc,
+        client_ip_address: request.headers.get("CF-Connecting-IP") || "",
+        client_user_agent: request.headers.get("User-Agent") || "",
+      }),
+      custom_data: {
+        currency: "USD",
+        value: amountTotal / 100,
+        content_name: "HabTrack - Habit + Task Tracker",
+        content_ids: contentIds,
+        contents: contentIds.map((id) => ({ id, quantity: 1 })),
+        num_items: contentIds.length,
+      },
+    }],
+  };
+
+  try {
+    const response = await fetch(`https://graph.facebook.com/v20.0/27284228041269455/events?access_token=${env.META_CAPI_TOKEN}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (response.ok) return { sent: true };
+    const body = await response.text();
+    return { sent: false, error: body.slice(0, 300) };
+  } catch (error) {
+    return { sent: false, error: error.message || "Meta InitiateCheckout request failed." };
+  }
+}
+
 function requiredStripeConfig(env) {
   if (!env.STRIPE_SECRET_KEY) return "Stripe secret is not configured.";
   if (!env.STRIPE_PUBLISHABLE_KEY || env.STRIPE_PUBLISHABLE_KEY.includes("REPLACE_WITH")) {
@@ -232,7 +286,7 @@ function requiredEmailConfig(env) {
 
 function cleanAttribution(value) {
   if (!value || typeof value !== "object") return {};
-  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid", "fbp", "fbc"];
+  const allowed = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "gclid", "fbp", "fbc", "source_url"];
   return allowed.reduce((metadata, key) => {
     if (typeof value[key] === "string" && value[key].trim()) {
       metadata[key] = value[key].trim().slice(0, 450);

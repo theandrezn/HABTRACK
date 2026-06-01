@@ -1822,7 +1822,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
         <span class="product-form__error-message"></span>
       </div><form method="post" action="/cart/add" id="product-form-template--18647385702498__main" accept-charset="UTF-8" class="form" enctype="multipart/form-data" novalidate="novalidate" data-type="add-to-cart-form"><input type="hidden" name="form_type" value="product"><input type="hidden" name="utf8" value="✓"><div class="hidden product-form__variants" id="product-form-template--18647385702498__main__variants" data-values=""></div>
         <input type="hidden" name="id" value="42773104951394" class="product-variant-id">
-        <div class="product-form__buttons product-form__buttons--uppercase"><button id="ProductSubmitButton-template--18647385702498__main" type="submit" name="add" class="atc-button product-form__submit button button--full-width button--margin-x main-product-atc" data-required-fields="0" data-valid-fields="0">
+        <div class="product-form__buttons product-form__buttons--uppercase"><button id="ProductSubmitButton-template--18647385702498__main" type="submit" name="add" class="atc-button product-form__submit button button--full-width button--margin-x main-product-atc go-to-checkout" data-required-fields="0" data-valid-fields="0">
             <span class="main-atc__error" style="display:none;"></span>
             <span class="main-atc__label button__label">
               
@@ -3601,6 +3601,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
       var checkoutEventId = trackingEventId('initiate_checkout');
       var selectedBumps = selectedIds();
       var checkoutAttribution = attribution();
+      checkoutAttribution.source_url = window.location.href;
       if (window.fbq) {
         fbq('track', 'InitiateCheckout', {
           value: 9.90 + (selectedBumps.length * 1.99),
@@ -3668,7 +3669,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
       <div class="habtrack-cart__saving"><span>Savings</span><strong id="habtrack-cart-saving">-$23.10</strong></div>
       <div class="habtrack-cart__subtotal"><span>Subtotal</span><strong id="habtrack-cart-subtotal">$23.83</strong></div>
       <div class="habtrack-cart__trust"><span>&#128274; Secure Checkout</span><span>&#9889; Instant Delivery</span><span>&#9989; 21-Day Money Back Guarantee</span></div>
-      <button id="habtrack-cart-checkout" class="habtrack-cart__checkout" type="button">CHECKOUT</button>
+      <button id="habtrack-cart-checkout" class="habtrack-cart__checkout go-to-checkout" type="button">CHECKOUT</button>
     </footer>
   </div>
 </aside>
