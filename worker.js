@@ -22,6 +22,12 @@ export default {
       });
     }
 
+    if (url.pathname === "/v2") {
+      const redirectUrl = new URL(request.url);
+      redirectUrl.pathname = "/v2/";
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
     if (url.pathname === "/api/create-checkout-session" && request.method === "POST") {
       return createCheckoutSession(request, env);
     }
