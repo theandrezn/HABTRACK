@@ -10,6 +10,7 @@ const ORDER_BUMPS = {
   wallpapers: ["100-Pack Motivational Quote Phone Wallpaper", "100+ wallpapers that rewire your phone into a focus tool.", 199, "images/photo_1.png"],
   updates: ["Lifetime Updates", "Receive future improvements to the HabTrack system.", 199, "images/updated_ffb31b52-f3b9-4ba7-aade-f77e3dfab0f9.png"],
 };
+const LIFETIME_UPDATES_LOOKUP_KEY = "habtrack_lifetime_updates_199";
 
 export default {
   async fetch(request, env) {
@@ -78,7 +79,7 @@ async function createCheckoutSession(request, env) {
   form.set("line_items[0][price_data][product_data][description]", "Instant digital download with lifetime access.");
   form.set("line_items[0][price_data][product_data][images][0]", `${origin}/images/habtrack-first-gallery-optimized.webp`);
   form.set("line_items[0][quantity]", "1");
-  const selectedBumps = cleanOrderBumps(body.bumps);
+  const selectedBumps = [];
   selectedBumps.forEach((id, offset) => {
     const [name, description, amount, imagePath] = ORDER_BUMPS[id];
     const index = offset + 1;
@@ -89,6 +90,10 @@ async function createCheckoutSession(request, env) {
     form.set(`line_items[${index}][price_data][product_data][images][0]`, `${origin}/${imagePath}`);
     form.set(`line_items[${index}][quantity]`, "1");
   });
+  const lifetimeUpdatesPriceId = await getOrCreateLifetimeUpdatesPriceId(env, origin);
+  if (!lifetimeUpdatesPriceId.ok) return stripeError(lifetimeUpdatesPriceId.response);
+  form.set("optional_items[0][price]", lifetimeUpdatesPriceId.id);
+  form.set("optional_items[0][quantity]", "1");
   form.set("metadata[product]", "habtrack-habit-task-system");
   form.set("metadata[source]", "habtrack-hosted-checkout");
   form.set("metadata[order_bumps]", selectedBumps.join(","));
@@ -125,6 +130,49 @@ async function createCheckoutSession(request, env) {
   return json({ id: session.id, url: session.url });
 }
 
+async function getOrCreateLifetimeUpdatesPriceId(env, origin) {
+  const priceLookup = await stripeRequest(`/prices?lookup_keys[]=${encodeURIComponent(LIFETIME_UPDATES_LOOKUP_KEY)}&active=true&limit=1`, env, {
+    method: "GET",
+  });
+  if (!priceLookup.ok) return { ok: false, response: priceLookup };
+  const existing = await priceLookup.json();
+  if (existing.data?.[0]?.id) return { ok: true, id: existing.data[0].id };
+
+  const [, description, amount, imagePath] = ORDER_BUMPS.updates;
+  const productForm = new URLSearchParams();
+  productForm.set("name", "Lifetime Updates");
+  productForm.set("description", description);
+  productForm.set("images[0]", `${origin}/${imagePath}`);
+  productForm.set("metadata[slug]", "lifetime-updates");
+
+  const productResponse = await stripeRequest("/products", env, {
+    method: "POST",
+    body: productForm,
+    headers: {
+      "Idempotency-Key": `${LIFETIME_UPDATES_LOOKUP_KEY}_product`,
+    },
+  });
+  if (!productResponse.ok) return { ok: false, response: productResponse };
+  const product = await productResponse.json();
+
+  const priceForm = new URLSearchParams();
+  priceForm.set("currency", "usd");
+  priceForm.set("unit_amount", String(amount));
+  priceForm.set("lookup_key", LIFETIME_UPDATES_LOOKUP_KEY);
+  priceForm.set("product", product.id);
+
+  const created = await stripeRequest("/prices", env, {
+    method: "POST",
+    body: priceForm,
+    headers: {
+      "Idempotency-Key": `${LIFETIME_UPDATES_LOOKUP_KEY}_price`,
+    },
+  });
+  if (!created.ok) return { ok: false, response: created };
+  const price = await created.json();
+  return { ok: true, id: price.id };
+}
+
 async function handleStripeWebhook(request, env) {
   const payload = await request.text();
   const signature = request.headers.get("Stripe-Signature") || "";
@@ -146,18 +194,37 @@ async function handleStripeWebhook(request, env) {
   const missing = requiredEmailConfig(env);
   if (missing) return json({ error: missing }, 500);
 
+  const purchasedOrderBumps = await getPurchasedOrderBumps(session, env);
+
   const emailResult = await sendAccessEmail({
     env,
     to: email,
     sessionId: session.id,
     paymentIntent: session.payment_intent,
-    orderBumps: session.metadata?.order_bumps || "",
+    orderBumps: purchasedOrderBumps.join(","),
   });
   if (!emailResult.ok) return json({ error: emailResult.error }, 502);
 
   const metaResult = await sendMetaPurchaseEvent({ env, session, email });
 
   return json({ received: true, email_sent: true, meta_sent: metaResult.sent, meta_error: metaResult.error || undefined });
+}
+
+async function getPurchasedOrderBumps(session, env) {
+  const purchased = new Set(cleanOrderBumps((session.metadata?.order_bumps || "").split(",")));
+  if (!session.id) return [...purchased];
+
+  const lineItemsResponse = await stripeRequest(`/checkout/sessions/${session.id}/line_items?limit=100`, env, {
+    method: "GET",
+  });
+  if (!lineItemsResponse.ok) return [...purchased];
+
+  const lineItems = await lineItemsResponse.json();
+  (lineItems.data || []).forEach((item) => {
+    const description = `${item.description || ""} ${item.price?.product?.name || ""}`.toLowerCase();
+    if (description.includes("lifetime updates")) purchased.add("updates");
+  });
+  return [...purchased];
 }
 
 async function getCheckoutSession(url, env) {
