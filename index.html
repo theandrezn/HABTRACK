@@ -3484,6 +3484,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
       ['updates', 'images/updated_ffb31b52-f3b9-4ba7-aade-f77e3dfab0f9.png', 'Lifetime Updates', 'Receive future improvements to the HabTrack system.', 199]
     ];
     var selected = {};
+    var directCheckoutNoBumps = true;
 
     bumps.forEach(function (bump) { selected[bump[0]] = true; });
 
@@ -3504,6 +3505,7 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
     }
 
     function selectedIds() {
+      if (directCheckoutNoBumps) return [];
       return bumps.filter(function (bump) { return selected[bump[0]]; }).map(function (bump) { return bump[0]; });
     }
 
@@ -3573,6 +3575,10 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
 
     function openCart(event) {
       if (event) event.preventDefault();
+      if (directCheckoutNoBumps) {
+        startStripeCheckout(document.querySelector('#ProductSubmitButton-template--18647385702498__main'));
+        return;
+      }
       renderCart();
       document.querySelector('#habtrack-cart').classList.add('is-open');
       document.querySelector('#habtrack-cart').setAttribute('aria-hidden', 'false');
@@ -3584,7 +3590,11 @@ Log in</a><ul class="list list-social list-unstyled" role="list"></ul>
     }, true);
 
     document.addEventListener('click', function (event) {
-      if (event.target.closest('#ProductSubmitButton-template--18647385702498__main, .main-product-atc')) openCart(event);
+      if (event.target.closest('#ProductSubmitButton-template--18647385702498__main, .main-product-atc')) {
+        event.preventDefault();
+        startStripeCheckout(event.target.closest('#ProductSubmitButton-template--18647385702498__main, .main-product-atc'));
+        return;
+      }
       if (event.target.closest('[data-close-habtrack-cart]')) {
         document.querySelector('#habtrack-cart').classList.remove('is-open');
         document.querySelector('#habtrack-cart').setAttribute('aria-hidden', 'true');
