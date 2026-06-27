@@ -73,7 +73,7 @@ async function createCheckoutSession(request, env) {
   form.set("success_url", "https://thanyouhabtrack.pages.dev/?session_id={CHECKOUT_SESSION_ID}");
   form.set("cancel_url", `${origin}/`);
   form.set("line_items[0][price_data][currency]", "usd");
-  form.set("line_items[0][price_data][unit_amount]", "990");
+  form.set("line_items[0][price_data][unit_amount]", "500");
   form.set("line_items[0][price_data][product_data][name]", "HabTrack - Habit + Task Tracker");
   form.set("line_items[0][price_data][product_data][description]", "Instant digital download with lifetime access.");
   form.set("line_items[0][price_data][product_data][images][0]", `${origin}/images/habtrack-first-gallery-optimized.webp`);
@@ -115,7 +115,7 @@ async function createCheckoutSession(request, env) {
     env,
     eventId: body.event_id,
     attribution,
-    amountTotal: 990 + selectedBumps.length * 199,
+    amountTotal: 500 + selectedBumps.length * 199,
     orderBumps: selectedBumps,
     request,
   });
